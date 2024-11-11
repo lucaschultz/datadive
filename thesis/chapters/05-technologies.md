@@ -1,5 +1,8 @@
 ---
 title: Technologies Used in Datadive
+slug: technologies
+author: Luca Schultz
+description: An overview of the technologies used in the Datadive codebase
 ---
 
 As already mentioned, maintainability is the most important requirement for the Datadive codebase. The selection of technologies was made in such a way that it presents a low entry barrier for contributing code to Datadive. This approach involves using a limited number of programming languages and technologies. It also prioritizes tools that assist developers in the development process, such as those that enable static analysis of the code to prevent bugs before they are committed and enforce best practices.
@@ -123,6 +126,20 @@ Datadive uses Prettier to maintain a consistent code style across the codebase. 
 Turborepo is a build system specifically designed for managing JavaScript and TypeScript monorepos. It addresses the challenges associated with such repositories by implementing efficient build and caching mechanisms. Turborepo uses a task graph to identify the minimal set of tasks required for a build, thus optimizing the build process and reducing redundant work. This task graph enables intelligent task scheduling, which can significantly decrease build times in large-scale projects. By caching outputs, Turborepo avoids unnecessary recomputation, enhancing build efficiency. This system is particularly advantageous for development teams working within monorepos, as it supports a more efficient workflow and can enhance the overall developer experience. [][#TURBOREPO]
 
 Datadive uses Turborepo to manage the monorepo structure of the codebase. By leveraging Turborepo's build system, Datadive can optimize the build process, reduce build times, and enhance the development workflow. This choice aligns with Datadive's focus on maintainability and efficiency, as Turborepo provides a scalable solution for managing a large codebase.
+
+### Lucia Auth
+
+Lucia Auth was a package designed for managing user authentication and authorization in web applications. However, since the start of this thesis, it has been deprecated and is now a resource for learning how to implement session-based authentication in web applications. [][#LUCIA] [][#LUCIA_DEPRECATED]
+
+Datadive uses Lucia Auth for user authentication in the `@datadive/auth` package, which will need to be refactored with a different solution in the future.
+
++++
+
+### GitHub Actions
+
+GitHub Actions is a feature that allows developers to automate tasks such as building, testing, and deploying code. Actions are defined using YAML files, which outline the steps to execute, the conditions for running them, and the environment in which they operate. GitHub Actions can be triggered by events like pushes to a repository, pull requests, or issue comments. [][#GITHUB_ACTIONS]
+
+The Datadive repository uses GitHub Actions to automate the execution of tests and linting tasks whenever code is pushed to the `main` branch or a pull request is opened. GitHub Actions also deploy the documentation site to GitHub Pages when changes are merged into the `main` branch.
 
 <!-- Footnotes -->
 

@@ -78,6 +78,14 @@
 
 [#LUCIA]: Lucia, https://lucia-auth.com, last accessed 2024/10/28.
 
+[#LUCIA_DEPRECATED]: A fresh start • lucia-auth/lucia • Discussion #1714, https://github.com/lucia-auth/lucia/discussions/1714, last accessed 2024/10/28.
+
+[#GITHUB_ACTIONS]: GitHub Actions documentation, https://docs.github.com/en/actions, last accessed 2024/10/28.
+
+[#GITHUB_PAGES]: GitHub Pages documentation, https://docs.github.com/en/pages, last accessed 2024/10/28.
+
+[#GITHUB]: GitHub Docs, https://docs.github.com/en/, last accessed 2024/10/28.
+
 [#STACKOVERFLOW_SURVEY]: 2024 Stack Overflow Developer Survey, https://survey.stackoverflow.co/2024, last accessed 2024/10/28.
 
 [#STACKOVERFLOW_SURVEY_METHODOLOGY]: Methodology | 2024 Stack Overflow Developer Survey, https://survey.stackoverflow.co/2024/methodology/, last accessed 2024/10/28.

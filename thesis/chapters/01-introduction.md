@@ -1,5 +1,8 @@
 ---
 title: Introducing Datadive
+slug: introducing-datadive
+author: Luca Schultz
+description: An introduction to the Datadive platform
 ---
 
 Users of data analysis software are often not statisticians or data scientists with extensive programming skills. Instead, they are typically experts or students in their own research fields who have learned established statistical methods to apply to datasets with known structures. Since graphical user interfaces (GUIs) are the most common way to interact with software, it is no surprise that these users often rely on GUI-based applications for their data analysis tasks. [][#GUI_FOR_R]

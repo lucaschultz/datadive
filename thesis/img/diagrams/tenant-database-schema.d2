@@ -1,4 +1,4 @@
-cell: {
+cell_template: {
   shape: sql_table
 
   "id": TEXT { constraint: [primary_key; unique] }
@@ -10,11 +10,11 @@ cell: {
   "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
 }
 
-cell_input: {
+cell_template_input: {
   shape: sql_table
 
   "id": TEXT { constraint: [primary_key; unique] }
-  "cell_id": TEXT { constraint: [foreign_key; unique] }
+  "cell_template_id": TEXT { constraint: [foreign_key; unique] }
   "input_id": TEXT { constraint: [foreign_key; unique] }
   "placeholder": TEXT { constraint: ["NULL"] }
   "label ": TEXT { constraint: [] }
@@ -25,9 +25,9 @@ cell_input: {
   "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
 }
 
-cell_input.cell_id -> cell.id
+cell_template_input.cell_template_id -> cell_template.id
 
-cell_input.input_id -> input.id
+cell_template_input.input_id -> input.id
 
 collaborator: {
   shape: sql_table

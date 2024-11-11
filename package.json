@@ -18,7 +18,7 @@
     "commit": "git-cz",
     "diagram": "bun run diagram:generate && bun run diagram:build",
     "diagram:build": "bun run ./scripts/build-diagram.ts",
-    "diagram:generate": "source thesis/.env.local && bun run erd-generator libsql -f -a $LANDLORD_DB_TOKEN -o ./thesis/_img/diagrams/landlord-database-schema.d2 $LANDLORD_DB_URI && bun run erd-generator libsql -f -a $TENANT_DB_TOKEN -o ./thesis/_img/diagrams/landlord-database-schema.d2 $TENANT_DB_URI",
+    "diagram:generate": "source thesis/.env.local && bun run erd-generator libsql -f -a $LANDLORD_DB_TOKEN -o ./thesis/img/diagrams/landlord-database-schema.d2 $LANDLORD_DB_URI && bun run erd-generator libsql -f -a $TENANT_DB_TOKEN -o ./thesis/img/diagrams/tenant-database-schema.d2 $TENANT_DB_URI",
     "format": "bun format:write",
     "format:check": "prettier \"**/*\" --ignore-unknown --list-different",
     "format:write": "prettier \"**/*\" --ignore-unknown --list-different --write",

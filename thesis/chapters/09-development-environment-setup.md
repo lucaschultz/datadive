@@ -1,6 +1,8 @@
 ---
 title: Development Environment Setup
+slug: development-environment-setup
 author: Luca Schultz
+description: Setting up the development environment for the Datadive platform
 ---
 
 The setup of the development environment contains several steps that need to be followed to ensure that the Datadive platform can be developed and tested locally. This chapter provides a step-by-step guide on how to set up the development environment for the Datadive platform. The guide covers the installation of the required tools, the configuration of the development environment, and the setup of the project repository.
@@ -95,8 +97,6 @@ bun run dev
 ```
 
 This command will start the Datadive platform in development mode. The platform consists of the API and the web application. The API will be available at `http://localhost:3000` and the web application at `http://localhost:3001`. You can access the web application in your browser to start developing and testing the Datadive platform.
-
-+++
 
 ### Creating a Tenant
 

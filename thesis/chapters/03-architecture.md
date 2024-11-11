@@ -1,5 +1,8 @@
 ---
 title: Architecture
+slug: architecture
+author: Luca Schultz
+description: Learn about the architecture of the Datadive platform.
 ---
 
 Software architecture defines the structure of a software system, detailing its organization and the interaction of its components. It serves as a blueprint to ensure the system is scalable, reliable, and maintainable. Effective software architecture is crucial for managing complexity and guiding development to meet requirements. This thesis distinguishes between two architectural layers: code organization and system architecture. Code organization refers to the structure of the codebase, while system architecture addresses the high-level arrangement of components (e.g., the backend, a microservice, or a client app) and their interactions during runtime[^RUNTIME]. [][#SOFTWARE_ARCHITECTURE]
@@ -132,36 +135,36 @@ Each package has a consistent structure, as shown in figure <a class="ref" href=
 
 <figure id="fig-package-structure" style="line-height: 1.3;">
 
-```plaintext
+```bash
   package/
-  ├── dist/                           ← Build output
-  ├── scripts/                        ← Scripts for common tasks
-  ├── src/                            ← Source code of the package
-  │   ├── landlord/                   ← Landlord-specific code
-  │   │   ├── tenant/                 ← Tenant management feature
+  ├── dist/                           # Build output
+  ├── scripts/                        # Scripts for common tasks
+  ├── src/                            # Source code of the package
+  │   ├── landlord/                   # Landlord-specific code
+  │   │   ├── tenant/                 # Tenant management feature
   │   │   │   ├── create-tenant.ts
-  │   │   │   └── shared/             ← Shared code for tenant management
-  │   │   └── user/                   ← User management feature
+  │   │   │   └── shared/             # Shared code for tenant management
+  │   │   └── user/                   # User management feature
   │   │       ├── list-users.ts
   │   │       └── update-user.ts
-  │   ├── shared/                     ← Shared code for landlord features
-  │   │   ├── types/                  ← Shared landlord types
+  │   ├── shared/                     # Shared code for landlord features
+  │   │   ├── types/                  # Shared landlord types
   │   │   │   └── user.ts
-  │   │   └── utils/                  ← Shared landlord utilities
+  │   │   └── utils/                  # Shared landlord utilities
   │   │       ├── parse-cookie.ts
   │   │       └── parse-date.ts
-  │   └── tenant/                     ← Tenant-specific code
-  │       ├── notebook/               ← Notebook feature
-  │       │   ├── execute/            ← Notebook execution feature
+  │   └── tenant/                     # Tenant-specific code
+  │       ├── notebook/               # Notebook feature
+  │       │   ├── execute/            # Notebook execution feature
   │       │   └── update-notebook.ts
-  │       ├── shared/                 ← Shared code for tenant features
-  │       │   └── types/              ← Shared tenant types
+  │       ├── shared/                 # Shared code for tenant features
+  │       │   └── types/              # Shared tenant types
   │       │       └── notebook.ts
-  │       └── user/                   ← User feature
+  │       └── user/                   # User feature
   │           ├── update-user.ts
   │           ├── delete-user.ts
-  │           └── shared/             ← Shared code for user feature
-  │               └── utils/          ← Shared user utilities
+  │           └── shared/             # Shared code for user feature
+  │               └── utils/          # Shared user utilities
   ├── package.json
   ┆
 ```
@@ -196,7 +199,7 @@ Since Datadive relies on Jupyter components for code execution and management, t
 
 Each Datadive user corresponds to a user in the data model, as shown in figure <a class="ref" href="#fig-tenant-database-schema">8</a>. Users create and own projects, which store metadata such as the project name and connection details to a Jupyter server instance created using JupyterHub. Each project contains notebooks, but Datadive only stores notebook metadata in the database, including the notebook name and associated project. The Jupyter server instance manages the notebook content: cells, the basic units of code, text, or other content.
 
-Jupyter supports several cell types, with code cells and display data cells being most relevant for Datadive. Code cells contain executable code, while display data cells contain the output of code execution, such as text, images, or plots. The key difference from using Jupyter notebooks directly is that Datadive users do not create cells by writing code. Instead, they select from predefined cell templates which contain code snippets for data analysis tasks, such as loading data from a file, cleaning data, or performing statistical analysis. The code can contain placeholders for user input provided through the Datadive user interface. Each placeholder has an associated input with a name and a type, which can be a string, number, path, or a variety of other value types. These inputs generate the user interface for the cell, enabling users to provide the necessary information for the code snippet.
+Jupyter supports several cell types, with code cells and display data cells being the most relevant for Datadive. Code cells contain executable code, while display data cells show the output of that code, such as text, images, or plots. When executed sequentially, the code cells in a notebook form a script that represents the data analysis workflow, as illustrated in figure <a class="ref" href="#fig-simplified-data-model">2</a>. Unlike using Jupyter notebooks directly, Datadive users do not create cells by writing code. Instead, they select from predefined cell templates that include code snippets for data analysis tasks, such as loading data from a file, cleaning data, or performing statistical analysis. The code of the cell templates can include placeholders for user input, which are provided through the Datadive user interface. Each placeholder has an associated input with a name and type, which can be a string, number, path, or various other value types. These inputs generate the user interface for the cell, allowing users to provide the necessary information for the code snippet.
 
 Many of the key interactions in Datadive revolve around cells. Users can create, read, update, and delete cells within a notebook. When a user executes a cell, Datadive requests the Jupyter server execute the notebook. The server processes the code and returns the output, which Datadive displays to the user. In the future, Datadive will support more advanced interactions, such as the creation of custom cell templates, the integration with external services or plugins to provide additional functionality, and storing the execution history of each cell. Another important part of the initially planned features are interactive cell templates. These could be used to guide users through complex data analysis tasks such as test selection or data cleaning.
 

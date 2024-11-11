@@ -1,5 +1,8 @@
 ---
 title: Outlook
+slug: outlook
+author: Luca Schultz
+description: The future of the Datadive platform
 ---
 
 This thesis presents the architecture, code structure, and development environment of the Datadive platform. Although the current state is far from a complete data analysis platform, it lays a foundation for future development. This chapter reviews the platform's current status and outlines the next steps needed to make it fully functional for researchers.
@@ -16,7 +19,7 @@ The prototype enables users to create projects and notebooks, as well as execute
 
 ### Next Steps
 
-The immediate next steps for the Datadive platform involve enhancing the functionality of both the frontend and backend applications. The data model created by the migrations of the `@datadive/db` package includes all the tables necessary for the platform's core functionality, such as user authentication, project management, and notebook execution. The API definition in the `@datadive/spec` package will be extended to include all necessary endpoints for this core functionality, and these endpoints will be implemented in the `@datadive/api` package.
+The immediate next steps for the Datadive platform involve enhancing the functionality of both the frontend and backend applications. The data model created by the migrations of the `@datadive/db` package includes all the tables necessary for the platform's core functionality, such as user authentication, project management, and notebook execution. The API definition in the `@datadive/spec` package will be extended to include all necessary endpoints for this core functionality, and these endpoints will be implemented in the `@datadive/api` package. Another immediate step is to refactor the @datadive/auth package to replace the deprecated Lucia Auth package with a custom authentication solution, using Lucia Auth as a learning resource. [][#LUCIA] [][#LUCIA_DEPRECATED]
 
 Since the entire data model revolves around users "owning" projects that contain notebooks, it is essential to prioritize the implementation of endpoints for user management and authentication, as these endpoints form the foundation for all other functionalities. Once these endpoints are established, the next step will be to implement the endpoints for project management, which will allow users to create, update, and delete projects.
 
@@ -25,6 +28,8 @@ Subsequently, the endpoints for notebook management will be refactored to enable
 Another crucial step to get the Datadive platform production ready is implementing a custom authenticator for JupyterHub and figuring out an deployment strategy. The authenticator should regulate access to the Jupyter servers by authenticating users against the Datadive API, allowing only authenticated users to access the Jupyter servers [][#JUPYTER_AUTHENTICATORS]. This is crucial for the security of the platform, as it ensures that only authorized users can execute code in the platform and that user data is protected. The deployment strategy should include any the necessary configuration for a production Kubernetes cluster, such as setting up the JupyterHub Helm chart, configuring the JupyterHub authenticator and several other settings that are necessary for a production deployment of Jupyter Hub. It is also likely, that Datadive will need a custom Jupyter Server Docker image that includes configurations to allow installing additional packages and libraries or restrict access to certain parts of the Jupyter Lab interface to ensure that users can only use the features that won't interfere with the Datadive platform [][#JUPYTER_IMAGES].
 
 The next steps for the frontend are less clear because both the design and, more importantly, user interactions require further exploration and defined requirements. The platform's core interactions involve significant complexity. Designing a user-friendly "workspace" that allows users to manage notebook cells, execute code, view results, and switch seamlessly to an IDE-like Jupyter Lab interface is challenging. Implementing dynamically generated forms from server data for cell input is complex, especially if these forms need to include UX-enhancing features like client-side data validation or drafts to save progress. The next steps for the frontend should focus on exploring various designs and user interactions, defining clear requirements, and implementing the necessary components and pages to support the platform's core interactions.
+
++++
 
 ### Beyond the Core Functionality
 

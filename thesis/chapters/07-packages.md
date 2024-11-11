@@ -1,5 +1,8 @@
 ---
-title: Packages Introduction
+title: Packages
+slug: packages
+author: Luca Schultz
+description: An overview of the packages of the Datadive platform
 ---
 
 This chapter provides an overview of the packages of the Datadive platform, explaining their purpose and structure.
