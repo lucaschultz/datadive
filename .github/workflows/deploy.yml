@@ -24,12 +24,13 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
+      - name: Build Docs
+        run: bun turbo lint typecheck build test:e2e --filter=...@datadive/docs
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./apps/docs
-          package-manager: bun
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
+          path: "./apps/docs/dist/"
 
   deploy:
     needs: build
