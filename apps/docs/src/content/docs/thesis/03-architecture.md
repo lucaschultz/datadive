@@ -50,31 +50,10 @@ As illustrated in figure <a class="ref" href="#fig-notebook-format">3</a>, the c
 
 <figure id="fig-jupyter-code-execution">
 
-```d2
-user: User {
-  shape: circle
-}
-
-frontend: Browser {
-  jupyterLab: JupyterLab
-}
-
-backend: Server {
-  server: Jupyter Server
-  file: Notebook File
-  kernel: Kernel
-
-  server -> kernel: Code cells
-  server <- kernel: Execution results
-  server <-> file: Notebook data
-}
-
-frontend.jupyterLab <-> user
-frontend.jupyterLab <-> backend.server: HTTP API
-```
+![Simplified overview of the components required for Jupyter code execution.](../../../assets/jupyter-architecture-overview.svg)
 
   <figcaption>
-    Simplified overview of the components required for Jupyter code execution [][#JUPYTER_ARCHITECTURE].
+    Simplified overview of the components required for Jupyter code execution.
   </figcaption>
 </figure>
 
@@ -90,28 +69,7 @@ As illustrated in figure <a class="ref" href="#fig-architecture-overview">5</a>,
 
 <figure id="fig-architecture-overview">
 
-```d2
-Kubernetes: {
-  JupyterHub: Jupyter Hub
-  JupyterServer: Jupyter Server
-
-  Backend: Backend {
-    near: Kubernetes.JupyterServer
-  }
-}
-
-Frontend: Frontend
-
-Kubernetes.Backend -> Database: "Store/retrieve data"
-
-Kubernetes.Backend -> Kubernetes.JupyterHub: "Authentication and user information"
-
-Kubernetes.Backend -> Kubernetes.JupyterServer: "Create/edit notebooks, execute code"
-
-Frontend -> Kubernetes.Backend: "User interactions"
-
-Kubernetes.JupyterHub -> Kubernetes.JupyterServer: "Start/stop servers"
-```
+![Overview of the Datadive platform architecture.](../../../assets/datadive-architecture-overview.svg)
 
   <figcaption>
     Overview of the Datadive platform architecture.
@@ -240,163 +198,7 @@ Since Datadive relies on Jupyter components for code execution and management, t
 
 <figure id="fig-tenant-database-schema">
 
-```d2
-cell_template: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "title": TEXT { constraint: [unique] }
-  "description": TEXT { constraint: ["NULL"] }
-  "code": TEXT { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-cell_template_input: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "cell_template_id": TEXT { constraint: [foreign_key; unique] }
-  "input_id": TEXT { constraint: [foreign_key; unique] }
-  "placeholder": TEXT { constraint: ["NULL"] }
-  "label ": TEXT { constraint: [] }
-  "description": TEXT { constraint: ["NULL"] }
-  "required": boolean { constraint: ["NULL"] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-cell_template_input.cell_template_id -> cell_template.id
-
-cell_template_input.input_id -> input.id
-
-collaborator: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "user_id": TEXT { constraint: [foreign_key; unique] }
-  "project_id": TEXT { constraint: [foreign_key; unique] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-collaborator.project_id -> project.id
-
-collaborator.user_id -> user.id
-
-email_verification_code: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "code": TEXT { constraint: [] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "email": TEXT { constraint: [] }
-  "expires_at": timestamp { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-email_verification_code.user_id -> user.id
-
-input: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "title": TEXT { constraint: [] }
-  "description": TEXT { constraint: [] }
-  "type": TEXT { constraint: [foreign_key] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-input.type -> input_type.id
-
-input_type: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-}
-
-notebook: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "title": TEXT { constraint: [] }
-  "path": TEXT { constraint: [] }
-  "project_id": TEXT { constraint: [foreign_key] }
-  "status": TEXT { constraint: [foreign_key] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-notebook.project_id -> project.id
-
-notebook.status -> notebook_status.id
-
-notebook_status: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-}
-
-password_reset_token: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "token_hash": TEXT { constraint: [] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "expires_at": timestamp { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-password_reset_token.user_id -> user.id
-
-project: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "title": TEXT { constraint: [] }
-  "owner_id": TEXT { constraint: [foreign_key] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-project.owner_id -> user.id
-
-session: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "expires_at": INTEGER { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-session.user_id -> user.id
-
-user: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "username": TEXT { constraint: [unique] }
-  "email": TEXT { constraint: [unique] }
-  "email_verified": boolean { constraint: [DFLT] }
-  "password_hash": TEXT { constraint: [] }
-  "first_name": TEXT { constraint: [] }
-  "last_name": TEXT { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-```
+![The database schema of the tenant database as ER diagram.](../../../assets/tenant-database-schema.svg)
 
   <figcaption>
     The database schema of the tenant database as ER diagram.
@@ -415,86 +217,7 @@ Apart from the core data model, Datadive also offers features like user manageme
 
 <figure id="fig-landlord-database-schema">
 
-```d2
-email_verification_code: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "code": TEXT { constraint: [] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "email": TEXT { constraint: [] }
-  "expires_at": timestamp { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-email_verification_code.user_id -> user.id
-
-password_reset_token: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "token_hash": TEXT { constraint: [] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "expires_at": timestamp { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-password_reset_token.user_id -> user.id
-
-session: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "user_id": TEXT { constraint: [foreign_key] }
-  "expires_at": INTEGER { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-}
-
-session.user_id -> user.id
-
-tenant: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "domain": TEXT { constraint: [unique] }
-  "name": TEXT { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-tenant_database: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "url": TEXT { constraint: [unique] }
-  "encrypted_auth_token": TEXT { constraint: ["NULL"] }
-  "tenant_id": TEXT { constraint: [foreign_key; unique] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-
-tenant_database.tenant_id -> tenant.id
-
-user: {
-  shape: sql_table
-
-  "id": TEXT { constraint: [primary_key; unique] }
-  "username": TEXT { constraint: [unique] }
-  "email": TEXT { constraint: [unique] }
-  "email_verified": boolean { constraint: [DFLT] }
-  "password_hash": TEXT { constraint: [] }
-  "first_name": TEXT { constraint: [] }
-  "last_name": TEXT { constraint: [] }
-  "created_at": timestamp { constraint: [DFLT] }
-  "updated_at": timestamp { constraint: [DFLT] }
-  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
-}
-```
+![The database schema of the landlord database as ER diagram.](../../../assets/landlord-database-schema.svg)
 
   <figcaption>
     The database schema of the landlord database as ER diagram.

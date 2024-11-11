@@ -25,7 +25,6 @@
     "@lorenzo_lewis/starlight-utils": "^0.1.2",
     "@total-typescript/ts-reset": "^0.5.1",
     "astro": "^4.11.5",
-    "astro-d2": "^0.4.0",
     "neverthrow": "^7.1.0",
     "sharp": "^0.32.5",
     "unist-util-visit": "^5.0.0",

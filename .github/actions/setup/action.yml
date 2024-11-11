@@ -15,10 +15,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-${{ matrix.bun }}-bun-
 
-    - name: Install D2
-      shell: bash
-      run: curl -fsSL https://d2lang.com/install.sh | sh -s --
-
     - name: Install dependencies
       shell: bash
       run: bun install

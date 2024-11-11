@@ -14,7 +14,7 @@ Users of data analysis software are often not statisticians or data scientists w
 ![Diagram of a realistic data analysis workflow.](../../../assets/data-analysis-workflow.jpeg)
 
   <figcaption>
-    Diagram of a realistic data analysis workflow. The black arrows represent the idealized workflow, while the dashed arrows illustrate the actual workflow. The diagram is taken from the online book "Robust data analysis: an introduction to R" by Sina Rüeger. [][#ROBUST_DATA_ANALYSIS]
+    Diagram of a realistic data analysis workflow. The black arrows represent the idealized workflow, while the dashed arrows illustrate the actual workflow. The diagram is taken from the online book "Robust data analysis: an introduction to R" by Sina Rüeger.
   </figcaption>
 </figure>
 

@@ -2,7 +2,6 @@ import react from '@astrojs/react'
 import starlight from '@astrojs/starlight'
 import tailwind from '@astrojs/tailwind'
 import starlightUtils from '@lorenzo_lewis/starlight-utils'
-import astroD2 from 'astro-d2'
 import { defineConfig } from 'astro/config'
 
 import { citationIntegration } from './integrations/citation-integration'
@@ -24,7 +23,6 @@ export default defineConfig({
       },
     }),
     starlightUtils(),
-    astroD2({ layout: 'tala' }),
     tailwind({
       applyBaseStyles: false,
     }),
