@@ -39,6 +39,24 @@ export default defineConfig({
             collapsed: false,
           },
         },
+        {
+          label: 'Datadive API',
+          collapsed: true,
+          items: [
+            {
+              label: 'Specification',
+              link: '/spec',
+            },
+            {
+              label: 'OpenAPI (JSON)',
+              link: '/openapi.json',
+            },
+            {
+              label: 'OpenAPI (YAML)',
+              link: '/openapi.yml',
+            },
+          ],
+        },
       ],
     }),
   ],
