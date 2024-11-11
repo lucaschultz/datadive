@@ -1,5 +1,10 @@
 ---
 title: Architecture
+slug: thesis/architecture
+author: Luca Schultz
+description: Learn about the architecture of the Datadive platform.
+sidebar:
+  order: 3
 ---
 
 Software architecture defines the structure of a software system, detailing its organization and the interaction of its components. It serves as a blueprint to ensure the system is scalable, reliable, and maintainable. Effective software architecture is crucial for managing complexity and guiding development to meet requirements. This thesis distinguishes between two architectural layers: code organization and system architecture. Code organization refers to the structure of the codebase, while system architecture addresses the high-level arrangement of components (e.g., the backend, a microservice, or a client app) and their interactions during runtime[^RUNTIME]. [][#SOFTWARE_ARCHITECTURE]
@@ -44,7 +49,30 @@ When writing code in Jupyter, users interact with either Jupyter Notebook or Jup
 As illustrated in figure <a class="ref" href="#fig-notebook-format">3</a>, the code is stored in notebooks, which are JSON files. The top level object of the JSON file contains metadata about the notebook, such as the kernel used to execute the code. The `cells` array contains the individual cells of the notebook, which can be either code cells or markdown cells. Code cells contain the source code to be executed, while markdown cells contain text formatted using Markdown. The notebook format allows users to write code, visualize data, and share results in a single document. [][#JUPYTER_NOTEBOOK_FORMAT]
 
 <figure id="fig-jupyter-code-execution">
-  jupyter-architecture-overview.svg
+
+```d2
+user: User {
+  shape: circle
+}
+
+frontend: Browser {
+  jupyterLab: JupyterLab
+}
+
+backend: Server {
+  server: Jupyter Server
+  file: Notebook File
+  kernel: Kernel
+
+  server -> kernel: Code cells
+  server <- kernel: Execution results
+  server <-> file: Notebook data
+}
+
+frontend.jupyterLab <-> user
+frontend.jupyterLab <-> backend.server: HTTP API
+```
+
   <figcaption>
     Simplified overview of the components required for Jupyter code execution [][#JUPYTER_ARCHITECTURE].
   </figcaption>
@@ -61,7 +89,30 @@ Jupyter Servers do not have a concept of users or access control. Anyone who can
 As illustrated in figure <a class="ref" href="#fig-architecture-overview">5</a>, the architecture of the Datadive platform comprises three main components: the frontend, the backend, and the Jupyter components. Jupyter Hub manages the starting and stopping of Jupyter servers for each user within a Kubernetes cluster. Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. The Jupyter servers are based on Docker[^DOCKER] images and run in Docker containers. They handle notebooks, related files, and code execution. Using separate Jupyter servers for each user ensures isolated environments for file storage and code execution. Additionally, since Jupyter Hub supports customizing the Docker images used to run the Jupyter servers, future versions of Datadive may allow users to install additional libraries and packages in their execution environments [][#JUPYTER_IMAGES].
 
 <figure id="fig-architecture-overview">
-  datadive-architecture-overview.svg
+
+```d2
+Kubernetes: {
+  JupyterHub: Jupyter Hub
+  JupyterServer: Jupyter Server
+
+  Backend: Backend {
+    near: Kubernetes.JupyterServer
+  }
+}
+
+Frontend: Frontend
+
+Kubernetes.Backend -> Database: "Store/retrieve data"
+
+Kubernetes.Backend -> Kubernetes.JupyterHub: "Authentication and user information"
+
+Kubernetes.Backend -> Kubernetes.JupyterServer: "Create/edit notebooks, execute code"
+
+Frontend -> Kubernetes.Backend: "User interactions"
+
+Kubernetes.JupyterHub -> Kubernetes.JupyterServer: "Start/stop servers"
+```
+
   <figcaption>
     Overview of the Datadive platform architecture.
   </figcaption>
@@ -106,10 +157,8 @@ datadive
 │   ├── core/               # @datadive/core package
 │   ├── db/                 # @datadive/db package
 │   ├── email/              # @datadive/email package
-│   ├── jupyter/            # @datadive/jupyter package
 │   ├── spec/               # @datadive/spec package
 │   ├── turso/              # @datadive/turso package
-│   ├── ui/                 # @datadive/ui package
 │   └── utils/              # @datadive/utils package
 ├── patches/                # Patches for dependencies
 ├── prettier.config.js      # Prettier configuration
@@ -134,36 +183,36 @@ Each package has a consistent structure, as shown in figure <a class="ref" href=
 
 <figure id="fig-package-structure" style="line-height: 1.3;">
 
-```plaintext
+```bash
   package/
-  ├── dist/                           ← Build output
-  ├── scripts/                        ← Scripts for common tasks
-  ├── src/                            ← Source code of the package
-  │   ├── landlord/                   ← Landlord-specific code
-  │   │   ├── tenant/                 ← Tenant management feature
+  ├── dist/                           # Build output
+  ├── scripts/                        # Scripts for common tasks
+  ├── src/                            # Source code of the package
+  │   ├── landlord/                   # Landlord-specific code
+  │   │   ├── tenant/                 # Tenant management feature
   │   │   │   ├── create-tenant.ts
-  │   │   │   └── shared/             ← Shared code for tenant management
-  │   │   └── user/                   ← User management feature
+  │   │   │   └── shared/             # Shared code for tenant management
+  │   │   └── user/                   # User management feature
   │   │       ├── list-users.ts
   │   │       └── update-user.ts
-  │   ├── shared/                     ← Shared code for landlord features
-  │   │   ├── types/                  ← Shared landlord types
+  │   ├── shared/                     # Shared code for landlord features
+  │   │   ├── types/                  # Shared landlord types
   │   │   │   └── user.ts
-  │   │   └── utils/                  ← Shared landlord utilities
+  │   │   └── utils/                  # Shared landlord utilities
   │   │       ├── parse-cookie.ts
   │   │       └── parse-date.ts
-  │   └── tenant/                     ← Tenant-specific code
-  │       ├── notebook/               ← Notebook feature
-  │       │   ├── execute/            ← Notebook execution feature
+  │   └── tenant/                     # Tenant-specific code
+  │       ├── notebook/               # Notebook feature
+  │       │   ├── execute/            # Notebook execution feature
   │       │   └── update-notebook.ts
-  │       ├── shared/                 ← Shared code for tenant features
-  │       │   └── types/              ← Shared tenant types
+  │       ├── shared/                 # Shared code for tenant features
+  │       │   └── types/              # Shared tenant types
   │       │       └── notebook.ts
-  │       └── user/                   ← User feature
+  │       └── user/                   # User feature
   │           ├── update-user.ts
   │           ├── delete-user.ts
-  │           └── shared/             ← Shared code for user feature
-  │               └── utils/          ← Shared user utilities
+  │           └── shared/             # Shared code for user feature
+  │               └── utils/          # Shared user utilities
   ├── package.json
   ┆
 ```
@@ -190,7 +239,165 @@ The data model is a critical part of Datadive's architecture. It defines how dat
 Since Datadive relies on Jupyter components for code execution and management, the data model is aligned with Jupyter's data structures. This alignment simplifies the integration of Jupyter components and leverages the familiarity of users accustomed to Jupyter's terminology and concepts to enhance usability. At the core of the data model are users, projects, notebooks, and cells.
 
 <figure id="fig-tenant-database-schema">
-  tenant-database-schema.svg
+
+```d2
+cell_template: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [unique] }
+  "description": TEXT { constraint: ["NULL"] }
+  "code": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+cell_template_input: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "cell_template_id": TEXT { constraint: [foreign_key; unique] }
+  "input_id": TEXT { constraint: [foreign_key; unique] }
+  "placeholder": TEXT { constraint: ["NULL"] }
+  "label ": TEXT { constraint: [] }
+  "description": TEXT { constraint: ["NULL"] }
+  "required": boolean { constraint: ["NULL"] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+cell_template_input.cell_template_id -> cell_template.id
+
+cell_template_input.input_id -> input.id
+
+collaborator: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key; unique] }
+  "project_id": TEXT { constraint: [foreign_key; unique] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+collaborator.project_id -> project.id
+
+collaborator.user_id -> user.id
+
+email_verification_code: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "code": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "email": TEXT { constraint: [] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+email_verification_code.user_id -> user.id
+
+input: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "description": TEXT { constraint: [] }
+  "type": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+input.type -> input_type.id
+
+input_type: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+}
+
+notebook: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "path": TEXT { constraint: [] }
+  "project_id": TEXT { constraint: [foreign_key] }
+  "status": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+notebook.project_id -> project.id
+
+notebook.status -> notebook_status.id
+
+notebook_status: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+}
+
+password_reset_token: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "token_hash": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+password_reset_token.user_id -> user.id
+
+project: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "owner_id": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+project.owner_id -> user.id
+
+session: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": INTEGER { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+session.user_id -> user.id
+
+user: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "username": TEXT { constraint: [unique] }
+  "email": TEXT { constraint: [unique] }
+  "email_verified": boolean { constraint: [DFLT] }
+  "password_hash": TEXT { constraint: [] }
+  "first_name": TEXT { constraint: [] }
+  "last_name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+```
+
   <figcaption>
     The database schema of the tenant database as ER diagram.
   </figcaption>
@@ -198,7 +405,7 @@ Since Datadive relies on Jupyter components for code execution and management, t
 
 Each Datadive user corresponds to a user in the data model, as shown in figure <a class="ref" href="#fig-tenant-database-schema">8</a>. Users create and own projects, which store metadata such as the project name and connection details to a Jupyter server instance created using JupyterHub. Each project contains notebooks, but Datadive only stores notebook metadata in the database, including the notebook name and associated project. The Jupyter server instance manages the notebook content: cells, the basic units of code, text, or other content.
 
-Jupyter supports several cell types, with code cells and display data cells being most relevant for Datadive. Code cells contain executable code, while display data cells contain the output of code execution, such as text, images, or plots. The key difference from using Jupyter notebooks directly is that Datadive users do not create cells by writing code. Instead, they select from predefined cell templates which contain code snippets for data analysis tasks, such as loading data from a file, cleaning data, or performing statistical analysis. The code can contain placeholders for user input provided through the Datadive user interface. Each placeholder has an associated input with a name and a type, which can be a string, number, path, or a variety of other value types. These inputs generate the user interface for the cell, enabling users to provide the necessary information for the code snippet.
+Jupyter supports several cell types, with code cells and display data cells being the most relevant for Datadive. Code cells contain executable code, while display data cells show the output of that code, such as text, images, or plots. When executed sequentially, the code cells in a notebook form a script that represents the data analysis workflow, as illustrated in figure <a class="ref" href="#fig-simplified-data-model">2</a>. Unlike using Jupyter notebooks directly, Datadive users do not create cells by writing code. Instead, they select from predefined cell templates that include code snippets for data analysis tasks, such as loading data from a file, cleaning data, or performing statistical analysis. The code of the cell templates can include placeholders for user input, which are provided through the Datadive user interface. Each placeholder has an associated input with a name and type, which can be a string, number, path, or various other value types. These inputs generate the user interface for the cell, allowing users to provide the necessary information for the code snippet.
 
 Many of the key interactions in Datadive revolve around cells. Users can create, read, update, and delete cells within a notebook. When a user executes a cell, Datadive requests the Jupyter server execute the notebook. The server processes the code and returns the output, which Datadive displays to the user. In the future, Datadive will support more advanced interactions, such as the creation of custom cell templates, the integration with external services or plugins to provide additional functionality, and storing the execution history of each cell. Another important part of the initially planned features are interactive cell templates. These could be used to guide users through complex data analysis tasks such as test selection or data cleaning.
 
@@ -207,7 +414,88 @@ One intentionally simplified part of the core data model in the initial implemen
 Apart from the core data model, Datadive also offers features like user management, authentication, project sharing, and collaboration. These features are implemented using additional data structures and relationships that extend the core model. For example, authentication involves data structures for validating emails, resetting passwords and managing user sessions. Future versions of Datadive may also include more advanced user management features, such as roles and permissions to control access to projects and notebooks.
 
 <figure id="fig-landlord-database-schema">
-  landlord-database-schema.svg
+
+```d2
+email_verification_code: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "code": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "email": TEXT { constraint: [] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+email_verification_code.user_id -> user.id
+
+password_reset_token: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "token_hash": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+password_reset_token.user_id -> user.id
+
+session: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": INTEGER { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+session.user_id -> user.id
+
+tenant: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "domain": TEXT { constraint: [unique] }
+  "name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+tenant_database: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "url": TEXT { constraint: [unique] }
+  "encrypted_auth_token": TEXT { constraint: ["NULL"] }
+  "tenant_id": TEXT { constraint: [foreign_key; unique] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+tenant_database.tenant_id -> tenant.id
+
+user: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "username": TEXT { constraint: [unique] }
+  "email": TEXT { constraint: [unique] }
+  "email_verified": boolean { constraint: [DFLT] }
+  "password_hash": TEXT { constraint: [] }
+  "first_name": TEXT { constraint: [] }
+  "last_name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+```
+
   <figcaption>
     The database schema of the landlord database as ER diagram.
   </figcaption>

@@ -1,5 +1,10 @@
 ---
 title: Requirements
+slug: thesis/requirements
+author: Luca Schultz
+description: The requirements for the Datadive platform
+sidebar:
+  order: 2
 ---
 
 This thesis distinguishes between functional and technical requirements, as they serve different purposes in software development and must be managed differently throughout the project lifecycle.

@@ -1,11 +1,19 @@
-import type { AstroIntegration, RehypePlugins } from 'astro'
+import type { AstroIntegration, RehypePlugins } from 'astro';
 
-import { readFile, writeFile } from 'fs/promises'
-import path from 'path'
 
-import { ok, ResultAsync, safeTry } from 'neverthrow'
-import { visit } from 'unist-util-visit'
-import * as YAML from 'yaml'
+
+import { readFile, writeFile } from 'fs/promises';
+import path from 'path';
+
+
+
+import { ok, ResultAsync, safeTry } from 'neverthrow';
+import { visit } from 'unist-util-visit';
+import * as YAML from 'yaml';
+
+
+
+
 
 interface Citation {
   key: string
@@ -55,6 +63,7 @@ interface SidebarConfig {
 }
 
 interface CitationPageFrontmatter {
+  author?: string | undefined
   title?: string | undefined
   sidebar?: SidebarConfig | undefined
   slug?: string | undefined

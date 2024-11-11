@@ -1,11 +1,18 @@
 ---
 title: Introducing Datadive
+slug: thesis/introducing-datadive
+author: Luca Schultz
+description: An introduction to the Datadive platform
+sidebar:
+  order: 1
 ---
 
 Users of data analysis software are often not statisticians or data scientists with extensive programming skills. Instead, they are typically experts or students in their own research fields who have learned established statistical methods to apply to datasets with known structures. Since graphical user interfaces (GUIs) are the most common way to interact with software, it is no surprise that these users often rely on GUI-based applications for their data analysis tasks. [][#GUI_FOR_R]
 
 <figure id="fig-workflow">
-  data-analysis-workflow.jpeg
+
+![Diagram of a realistic data analysis workflow.](../../../assets/data-analysis-workflow.jpeg)
+
   <figcaption>
     Diagram of a realistic data analysis workflow. The black arrows represent the idealized workflow, while the dashed arrows illustrate the actual workflow. The diagram is taken from the online book "Robust data analysis: an introduction to R" by Sina Rüeger. [][#ROBUST_DATA_ANALYSIS]
   </figcaption>
@@ -16,7 +23,9 @@ While GUI-based data analysis tools offer a familiar interface for users without
 Recognizing the challenges of current data analysis approaches, the Behavioral Security Research Group at the University of Bonn is developing a data analysis tool as part of Florin Martius' doctoral thesis: Datadive. This tool aims to provide a GUI-based platform that encompasses the entire workflow of scientific data analysis projects. During the conceptual phase, discussions with Florin Martius and other research group members identified the platform's requirements. Based on these requirements, a concept for the platform was developed.
 
 <figure id="fig-simplified-data-model">
-  simplified-data-model.png
+
+![A simplified representation of the Datadive data model.](../../../assets/simplified-data-model.png)
+
   <figcaption>
     A simplified representation of the Datadive data model. Each cell corresponds to a piece of code. All cells together form a script that contains the analysis workflow.
   </figcaption>

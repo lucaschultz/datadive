@@ -15,6 +15,13 @@ export default defineConfig({
       citationsFile: 'src/assets/works-cited.txt',
       outputDir: 'src/content/docs/thesis',
       sortCitations: true,
+      citationPageFrontmatter: {
+        author: 'Luca Schultz',
+        description: 'Works cited in the Datadive thesis',
+        sidebar: {
+          order: 11,
+        },
+      },
     }),
     starlightUtils(),
     astroD2({ layout: 'tala' }),

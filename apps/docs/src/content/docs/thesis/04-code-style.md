@@ -1,5 +1,10 @@
 ---
 title: Code Style
+slug: thesis/code-style
+author: Luca Schultz
+description: Code style guidelines for the Datadive platform
+sidebar:
+  order: 4
 ---
 
 The previous chapter discussed the architecture of the Datadive platform, which refers to the high-level structure of a software system. It focused on how components interact and the design choices, such as microservices versus monolithic systems. Within this framework, code style plays a crucial role by establishing conventions and guidelines for writing code, including formatting and naming conventions. While architecture shapes the overall performance and reliability of the software, a consistent code style ensures clarity and coherence at the code level, enhancing readability and maintainability within a project. Companies or large projects often have a code style guide to ensure that all contributors follow the same conventions, two notable examples are Google and Deno but there also many recommendations which are based on the code style of open source code bases. [][#GOOGLE_TS_STYLE_GUIDE] [][#DENO_STYLE_GUIDE] [][#TS_STYLE_GUIDE]

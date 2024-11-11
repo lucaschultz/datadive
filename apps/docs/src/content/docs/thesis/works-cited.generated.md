@@ -1,4 +1,8 @@
 ---
+author: Luca Schultz
+description: Works cited in the Datadive thesis
+sidebar:
+  order: 11
 title: Works Cited
 slug: works-cited
 

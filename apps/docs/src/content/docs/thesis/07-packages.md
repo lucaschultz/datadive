@@ -1,5 +1,10 @@
 ---
-title: Datadive Packages
+title: Packages
+slug: thesis/packages
+author: Luca Schultz
+description: An overview of the packages of the Datadive platform
+sidebar:
+  order: 7
 ---
 
 This chapter provides an overview of the packages of the Datadive platform, explaining their purpose and structure.
@@ -64,16 +69,6 @@ The `@datadive/core` package contains the core functionality of the Datadive pla
 - `createLandlordCore` - Factory function that creates a new core object which contains all functions that implement the core functionality of the landlord part of the platform.
 - `createTenantCore` - Factory function that creates a new core object which contains all functions that implement the core functionality of the tenant part of the platform.
 - `CoreError` - Module that contains all error classes that may be returned when using the core functions.
-
-### The `@datadive/jupyter` Package
-
-The `@datadive/jupyter` package includes code for communicating with the Jupyter components of the Datadive platform. It is divided into functions for interacting with the JupyterHub API and the Jupyter Server API. The package utilizes the OpenAPI specification of the Jupyter APIs to generate a client, which is then wrapped to offer a more streamlined API and semantic error classes. It's main entrypoint has the following exports:
-
-- `createJupyterHubClient` - Factory function that creates a new JupyterHub communication client object which contains all functions necessary to interact with the JupyterHub component.
-- `createJupyterServerClient` - Factory function that creates a new Jupyter Server communication client object which contains all functions necessary to interact with the Jupyter Server component.
-- `JupyterError` - Module that contains all error classes that may be returned when using the functions of either client.
-
-+++
 
 ### The Configuration Packages
 

@@ -1,5 +1,10 @@
 ---
-title: Datadive Apps
+title: Apps
+slug: thesis/apps
+author: Luca Schultz
+description: An overview of the Datadive applications
+sidebar:
+  order: 8
 ---
 
 The Datadive repository contains three separate applications: the frontend, the backend, and the documentation. Each application is stored in a separate package in the `/apps` directory of the repository. This chapter provides an overview of each application, explaining its purpose and structure.
