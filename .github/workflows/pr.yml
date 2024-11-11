@@ -64,7 +64,7 @@ jobs:
           path: apps/web/playwright-report/
           retention-days: 30
 
-  marketing:
+  docs:
     name: Datadive Documentation CI
     runs-on: ubuntu-latest
 
