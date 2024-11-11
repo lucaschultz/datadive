@@ -9,6 +9,7 @@ import { citationIntegration } from './integrations/citation-integration'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://docs.datadive.app',
   integrations: [
     citationIntegration({
       citationsFile: 'src/assets/works-cited.txt',
