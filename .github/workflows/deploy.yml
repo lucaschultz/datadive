@@ -14,6 +14,12 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # These are needed to enable turborepo's remote task caching
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TSTRUCT_TOKEN: ${{ secrets.TSTRUCT_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
