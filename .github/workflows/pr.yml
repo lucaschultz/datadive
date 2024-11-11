@@ -29,8 +29,6 @@ jobs:
     name: Datadive API CI
     runs-on: ubuntu-latest
 
-    environment: Production
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,8 +44,6 @@ jobs:
   web:
     name: Datadive Web CI
     runs-on: ubuntu-latest
-
-    environment: Production
 
     steps:
       - name: Checkout
@@ -71,8 +67,6 @@ jobs:
   marketing:
     name: Datadive Documentation CI
     runs-on: ubuntu-latest
-
-    environment: Production
 
     steps:
       - name: Checkout
