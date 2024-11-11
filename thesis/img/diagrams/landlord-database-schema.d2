@@ -1,0 +1,78 @@
+email_verification_code: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "code": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "email": TEXT { constraint: [] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+email_verification_code.user_id -> user.id
+
+password_reset_token: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "token_hash": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+password_reset_token.user_id -> user.id
+
+session: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": INTEGER { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+session.user_id -> user.id
+
+tenant: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "domain": TEXT { constraint: [unique] }
+  "name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+tenant_database: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "url": TEXT { constraint: [unique] }
+  "encrypted_auth_token": TEXT { constraint: ["NULL"] }
+  "tenant_id": TEXT { constraint: [foreign_key; unique] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+tenant_database.tenant_id -> tenant.id
+
+user: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "username": TEXT { constraint: [unique] }
+  "email": TEXT { constraint: [unique] }
+  "email_verified": boolean { constraint: [DFLT] }
+  "password_hash": TEXT { constraint: [] }
+  "first_name": TEXT { constraint: [] }
+  "last_name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}

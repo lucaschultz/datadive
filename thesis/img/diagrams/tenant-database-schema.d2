@@ -1,0 +1,155 @@
+cell: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [unique] }
+  "description": TEXT { constraint: ["NULL"] }
+  "code": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+cell_input: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "cell_id": TEXT { constraint: [foreign_key; unique] }
+  "input_id": TEXT { constraint: [foreign_key; unique] }
+  "placeholder": TEXT { constraint: ["NULL"] }
+  "label ": TEXT { constraint: [] }
+  "description": TEXT { constraint: ["NULL"] }
+  "required": boolean { constraint: ["NULL"] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+cell_input.cell_id -> cell.id
+
+cell_input.input_id -> input.id
+
+collaborator: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key; unique] }
+  "project_id": TEXT { constraint: [foreign_key; unique] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+collaborator.project_id -> project.id
+
+collaborator.user_id -> user.id
+
+email_verification_code: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "code": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "email": TEXT { constraint: [] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+email_verification_code.user_id -> user.id
+
+input: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "description": TEXT { constraint: [] }
+  "type": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+input.type -> input_type.id
+
+input_type: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+}
+
+notebook: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "path": TEXT { constraint: [] }
+  "project_id": TEXT { constraint: [foreign_key] }
+  "status": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+notebook.project_id -> project.id
+
+notebook.status -> notebook_status.id
+
+notebook_status: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+}
+
+password_reset_token: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "token_hash": TEXT { constraint: [] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": timestamp { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+password_reset_token.user_id -> user.id
+
+project: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "title": TEXT { constraint: [] }
+  "owner_id": TEXT { constraint: [foreign_key] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}
+
+project.owner_id -> user.id
+
+session: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "user_id": TEXT { constraint: [foreign_key] }
+  "expires_at": INTEGER { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+}
+
+session.user_id -> user.id
+
+user: {
+  shape: sql_table
+
+  "id": TEXT { constraint: [primary_key; unique] }
+  "username": TEXT { constraint: [unique] }
+  "email": TEXT { constraint: [unique] }
+  "email_verified": boolean { constraint: [DFLT] }
+  "password_hash": TEXT { constraint: [] }
+  "first_name": TEXT { constraint: [] }
+  "last_name": TEXT { constraint: [] }
+  "created_at": timestamp { constraint: [DFLT] }
+  "updated_at": timestamp { constraint: [DFLT] }
+  "deleted_at": timestamp { constraint: ["NULL"; DFLT] }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@datadive/auth",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Auth package for Datadive",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@datadive/db": "workspace:^",
+    "@datadive/utils": "workspace:^",
+    "@libsql/client": "^0.8.1",
+    "@lucia-auth/adapter-sqlite": "^3.0.2",
+    "@node-rs/argon2": "^1.8.3",
+    "@oslojs/crypto": "^1.0.1",
+    "lucia": "^3.2.0",
+    "neverthrow": "^7.1.0",
+    "oslo": "^1.2.1"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^"
+  }
+}

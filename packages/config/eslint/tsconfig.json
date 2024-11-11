@@ -1,0 +1,6 @@
+{
+  "extends": ["@datadive/tsconfig/base.json"],
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "extends": ["@datadive/tsconfig/react.json"]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "@datadive/docs",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Documentation for Datadive",
+  "author": "Luca Schultz",
+  "type": "module",
+  "scripts": {
+    "build": "bunx --bun astro check && bunx --bun astro build",
+    "clean": "bun run rm -rf .astro dist *.tsbuildinfo playwright-report test-results",
+    "dev": "bunx --bun astro dev --trace-warnings",
+    "lint": "eslint .  --max-warnings 0",
+    "preview": "bunx --bun astro preview",
+    "start": "bunx --bun astro preview",
+    "sync": "bunx --bun astro sync",
+    "test:e2e": "playwright test",
+    "typecheck": "bunx --bun astro check"
+  },
+  "dependencies": {
+    "@astrojs/react": "^3.6.1",
+    "@astrojs/starlight": "^0.25.4",
+    "@astrojs/starlight-tailwind": "^2.0.3",
+    "@datadive/spec": "workspace:^",
+    "@datadive/utils": "workspace:^",
+    "@lorenzo_lewis/starlight-utils": "^0.1.2",
+    "@total-typescript/ts-reset": "^0.5.1",
+    "astro": "^4.11.5",
+    "astro-d2": "^0.4.0",
+    "neverthrow": "^7.1.0",
+    "sharp": "^0.32.5",
+    "unist-util-visit": "^5.0.0",
+    "yaml": "^2.5.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.7.0",
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^",
+    "@playwright/test": "^1.45.1",
+    "@types/bun": "^1.1.6",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "dotenv": "^16.4.5",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.3"
+  }
+}

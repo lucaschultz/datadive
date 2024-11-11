@@ -1,0 +1,63 @@
+diff --git a/dist/cjs/index.js b/dist/cjs/index.js
+index a4c858149be7abe4837c39b23a369b967e7c4c0f..5a19583753e78138a76ab20e0ad2bd42cde99ed9 100644
+--- a/dist/cjs/index.js
++++ b/dist/cjs/index.js
+@@ -2,12 +2,12 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.zValidator = void 0;
+ const validator_1 = require("hono/validator");
+-const zValidator = (target, schema, hook) => 
++const zValidator = (target, schema, hook) =>
+ // @ts-expect-error not typed well
+ (0, validator_1.validator)(target, async (value, c) => {
+     const result = await schema.safeParseAsync(value);
+     if (hook) {
+-        const hookResult = await hook({ data: value, ...result }, c);
++        const hookResult = await hook({ target: target, data: value, ...result }, c);
+         if (hookResult) {
+             if (hookResult instanceof Response) {
+                 return hookResult;
+diff --git a/dist/esm/index.d.ts b/dist/esm/index.d.ts
+index 095f546ba8a15636ffa82b5de73408b82eda7834..cd5bd576aa716ad9f856c1165ee3e0d60aadd707 100644
+--- a/dist/esm/index.d.ts
++++ b/dist/esm/index.d.ts
+@@ -1,16 +1,17 @@
+-import type { Context, MiddlewareHandler, Env, ValidationTargets, TypedResponse, Input } from 'hono';
++import type { Context, Env, Input, MiddlewareHandler, TypedResponse, ValidationTargets } from 'hono';
+ import type { z, ZodError } from 'zod';
+-export type Hook<T, E extends Env, P extends string, O = {}> = (result: {
++export type Hook<T, E extends Env, P extends string, Target extends keyof ValidationTargets = keyof ValidationTargets, O = {}> = (result: { target: Target } & ({
+     success: true;
+     data: T;
+ } | {
+     success: false;
+     error: ZodError;
+     data: T;
+-}, c: Context<E, P>) => Response | void | TypedResponse<O> | Promise<Response | void | TypedResponse<O>>;
++}), c: Context<E, P>) => Response | void | TypedResponse<O> | Promise<Response | void | TypedResponse<O>>;
+ type HasUndefined<T> = undefined extends T ? true : false;
+ export declare const zValidator: <T extends z.ZodType<any, z.ZodTypeDef, any>, Target extends keyof ValidationTargets, E extends Env, P extends string, In = z.input<T>, Out = z.output<T>, I extends Input = {
+     in: HasUndefined<In> extends true ? { [K in Target]?: (K extends "json" ? In : HasUndefined<keyof ValidationTargets[K]> extends true ? { [K2 in keyof In]?: ValidationTargets[K][K2] | undefined; } : { [K2_1 in keyof In]: ValidationTargets[K][K2_1]; }) | undefined; } : { [K_1 in Target]: K_1 extends "json" ? In : HasUndefined<keyof ValidationTargets[K_1]> extends true ? { [K2_2 in keyof In]?: ValidationTargets[K_1][K2_2] | undefined; } : { [K2_3 in keyof In]: ValidationTargets[K_1][K2_3]; }; };
+     out: { [K_2 in Target]: Out; };
+-}, V extends I = I>(target: Target, schema: T, hook?: Hook<z.TypeOf<T>, E, P, {}> | undefined) => MiddlewareHandler<E, P, V>;
+-export {};
++}, V extends I = I>(target: Target, schema: T, hook?: Hook<z.TypeOf<T>, E, P, Target, {}> | undefined) => MiddlewareHandler<E, P, V>;
++export { };
++
+diff --git a/dist/esm/index.js b/dist/esm/index.js
+index 8ec4f62da0c9d24888f21125ecd1d8b20315495b..365547194053558a43486fd2d97d0d191cda7080 100644
+--- a/dist/esm/index.js
++++ b/dist/esm/index.js
+@@ -1,10 +1,10 @@
+ import { validator } from 'hono/validator';
+-export const zValidator = (target, schema, hook) => 
++export const zValidator = (target, schema, hook) =>
+ // @ts-expect-error not typed well
+ validator(target, async (value, c) => {
+     const result = await schema.safeParseAsync(value);
+     if (hook) {
+-        const hookResult = await hook({ data: value, ...result }, c);
++        const hookResult = await hook({ target: target, data: value, ...result }, c);
+         if (hookResult) {
+             if (hookResult instanceof Response) {
+                 return hookResult;

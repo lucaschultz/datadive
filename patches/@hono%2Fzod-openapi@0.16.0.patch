@@ -1,0 +1,94 @@
+diff --git a/dist/index.d.mts b/dist/index.d.mts
+index 590e7b0e730c17b4f2b6bbe8912d14ad81ceeb14..931615968dbab898583bb94750a311211f7e43d0 100644
+--- a/dist/index.d.mts
++++ b/dist/index.d.mts
+@@ -1,12 +1,12 @@
+-import * as openapi3_ts_oas31 from 'openapi3-ts/oas31';
+-import * as openapi3_ts_oas30 from 'openapi3-ts/oas30';
+-import { RouteConfig as RouteConfig$1, ZodMediaTypeObject, OpenAPIRegistry, ZodRequestBody, ZodContentObject, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+-export { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+-import { MiddlewareHandler, TypedResponse, Env, Context, Input, Handler, Schema, Hono, ToSchema, ValidationTargets } from 'hono';
++import { OpenApiGeneratorV3, OpenAPIRegistry, RouteConfig as RouteConfig$1, ZodContentObject, ZodMediaTypeObject, ZodRequestBody } from '@asteasolutions/zod-to-openapi';
++import { Context, Env, Handler, Hono, Input, MiddlewareHandler, Schema, ToSchema, TypedResponse, ValidationTargets } from 'hono';
+ import { MergePath, MergeSchemaPath } from 'hono/types';
++import { ClientErrorStatusCode, InfoStatusCode, RedirectStatusCode, ServerErrorStatusCode, StatusCode, SuccessStatusCode } from 'hono/utils/http-status';
+ import { JSONParsed, RemoveBlankRecord } from 'hono/utils/types';
+-import { StatusCode, InfoStatusCode, SuccessStatusCode, RedirectStatusCode, ClientErrorStatusCode, ServerErrorStatusCode } from 'hono/utils/http-status';
+-import { ZodError, ZodType, z, ZodSchema } from 'zod';
++import * as openapi3_ts_oas30 from 'openapi3-ts/oas30';
++import * as openapi3_ts_oas31 from 'openapi3-ts/oas31';
++import { z, ZodError, ZodSchema, ZodType } from 'zod';
++export { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+ export { z } from 'zod';
+ 
+ type MaybePromise<T> = Promise<T> | T;
+@@ -71,13 +71,13 @@ type ExtractStatusCode<T extends RouteConfigStatusCode> = T extends keyof Status
+ type RouteConfigToTypedResponse<R extends RouteConfig> = {
+     [Status in keyof R['responses'] & RouteConfigStatusCode]: IsJson<keyof R['responses'][Status]['content']> extends never ? TypedResponse<{}, ExtractStatusCode<Status>, string> : TypedResponse<JSONParsed<ExtractContent<R['responses'][Status]['content']>>, ExtractStatusCode<Status>, 'json' | 'text'>;
+ }[keyof R['responses'] & RouteConfigStatusCode];
+-type Hook<T, E extends Env, P extends string, R> = (result: {
++type Hook<T, E extends Env, P extends string, R> = (result: ({
+     success: true;
+     data: T;
+ } | {
+     success: false;
+     error: ZodError;
+-}, c: Context<E, P>) => R;
++}) & { target: keyof ValidationTargets}, c: Context<E, P>) => R;
+ type ConvertPathType<T extends string> = T extends `${infer Start}/{${infer Param}}${infer Rest}` ? `${Start}/:${Param}${ConvertPathType<Rest>}` : T;
+ type OpenAPIHonoOptions<E extends Env> = {
+     defaultHook?: Hook<any, E, any, any>;
+@@ -162,4 +162,5 @@ declare const createRoute: <P extends string, R extends Omit<RouteConfig, "path"
+     getRoutingPath(): RoutingPath<R['path']>;
+ };
+ 
+-export { type Hook, OpenAPIHono, type OpenAPIHonoOptions, type OpenAPIObjectConfigure, type RouteConfig, type RouteConfigToTypedResponse, type RouteHandler, type RouteHook, createRoute };
++export { createRoute, OpenAPIHono, type Hook, type OpenAPIHonoOptions, type OpenAPIObjectConfigure, type RouteConfig, type RouteConfigToTypedResponse, type RouteHandler, type RouteHook };
++
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 590e7b0e730c17b4f2b6bbe8912d14ad81ceeb14..931615968dbab898583bb94750a311211f7e43d0 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,12 +1,12 @@
+-import * as openapi3_ts_oas31 from 'openapi3-ts/oas31';
+-import * as openapi3_ts_oas30 from 'openapi3-ts/oas30';
+-import { RouteConfig as RouteConfig$1, ZodMediaTypeObject, OpenAPIRegistry, ZodRequestBody, ZodContentObject, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+-export { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+-import { MiddlewareHandler, TypedResponse, Env, Context, Input, Handler, Schema, Hono, ToSchema, ValidationTargets } from 'hono';
++import { OpenApiGeneratorV3, OpenAPIRegistry, RouteConfig as RouteConfig$1, ZodContentObject, ZodMediaTypeObject, ZodRequestBody } from '@asteasolutions/zod-to-openapi';
++import { Context, Env, Handler, Hono, Input, MiddlewareHandler, Schema, ToSchema, TypedResponse, ValidationTargets } from 'hono';
+ import { MergePath, MergeSchemaPath } from 'hono/types';
++import { ClientErrorStatusCode, InfoStatusCode, RedirectStatusCode, ServerErrorStatusCode, StatusCode, SuccessStatusCode } from 'hono/utils/http-status';
+ import { JSONParsed, RemoveBlankRecord } from 'hono/utils/types';
+-import { StatusCode, InfoStatusCode, SuccessStatusCode, RedirectStatusCode, ClientErrorStatusCode, ServerErrorStatusCode } from 'hono/utils/http-status';
+-import { ZodError, ZodType, z, ZodSchema } from 'zod';
++import * as openapi3_ts_oas30 from 'openapi3-ts/oas30';
++import * as openapi3_ts_oas31 from 'openapi3-ts/oas31';
++import { z, ZodError, ZodSchema, ZodType } from 'zod';
++export { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+ export { z } from 'zod';
+ 
+ type MaybePromise<T> = Promise<T> | T;
+@@ -71,13 +71,13 @@ type ExtractStatusCode<T extends RouteConfigStatusCode> = T extends keyof Status
+ type RouteConfigToTypedResponse<R extends RouteConfig> = {
+     [Status in keyof R['responses'] & RouteConfigStatusCode]: IsJson<keyof R['responses'][Status]['content']> extends never ? TypedResponse<{}, ExtractStatusCode<Status>, string> : TypedResponse<JSONParsed<ExtractContent<R['responses'][Status]['content']>>, ExtractStatusCode<Status>, 'json' | 'text'>;
+ }[keyof R['responses'] & RouteConfigStatusCode];
+-type Hook<T, E extends Env, P extends string, R> = (result: {
++type Hook<T, E extends Env, P extends string, R> = (result: ({
+     success: true;
+     data: T;
+ } | {
+     success: false;
+     error: ZodError;
+-}, c: Context<E, P>) => R;
++}) & { target: keyof ValidationTargets}, c: Context<E, P>) => R;
+ type ConvertPathType<T extends string> = T extends `${infer Start}/{${infer Param}}${infer Rest}` ? `${Start}/:${Param}${ConvertPathType<Rest>}` : T;
+ type OpenAPIHonoOptions<E extends Env> = {
+     defaultHook?: Hook<any, E, any, any>;
+@@ -162,4 +162,5 @@ declare const createRoute: <P extends string, R extends Omit<RouteConfig, "path"
+     getRoutingPath(): RoutingPath<R['path']>;
+ };
+ 
+-export { type Hook, OpenAPIHono, type OpenAPIHonoOptions, type OpenAPIObjectConfigure, type RouteConfig, type RouteConfigToTypedResponse, type RouteHandler, type RouteHook, createRoute };
++export { createRoute, OpenAPIHono, type Hook, type OpenAPIHonoOptions, type OpenAPIObjectConfigure, type RouteConfig, type RouteConfigToTypedResponse, type RouteHandler, type RouteHook };
++

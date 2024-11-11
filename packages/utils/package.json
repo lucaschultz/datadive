@@ -1,0 +1,50 @@
+{
+  "name": "@datadive/utils",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Common utilities for Datadive",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./common": {
+      "types": "./dist/common/index.d.ts",
+      "default": "./dist/common/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "default": "./dist/browser/index.js"
+    },
+    "./type": {
+      "types": "./dist/type/index.d.ts"
+    },
+    "./filesystem": {
+      "types": "./dist/filesystem.d.ts",
+      "default": "./dist/filesystem.js"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "default": "./dist/url.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "neverthrow": "^7.1.0",
+    "typeid-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^"
+  }
+}

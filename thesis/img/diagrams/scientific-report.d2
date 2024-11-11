@@ -1,0 +1,67 @@
+ReportBuilding: {
+  shape: "oval"
+  label: "Scientific Report"
+}
+dataWrangling: {
+shape: "oval"
+label: "Data Wrangling"
+}
+
+createSubsets: {
+shape: "oval"
+label: "Create Subsets"
+}
+
+manipulate: {
+shape: "oval"
+label: "Manipulate Data"
+}
+
+visualization: {
+shape: "oval"
+label: "Data Visualization"
+}
+
+text: {
+shape: "oval"
+label: "As Text"
+}
+
+table: {
+shape: "oval"
+label: "As Table"
+}
+
+plot: {
+shape: "oval"
+label: "As Plot"
+}
+
+hypothesis: {
+shape: "oval"
+label: "Hypothesis"
+}
+
+testChoice: {
+shape: "oval"
+label: "Test Choice"
+}
+
+dataSelection: {
+shape: "oval"
+label: "Data Selection"
+}
+
+ReportBuilding -> dataWrangling
+ReportBuilding -> visualization
+ReportBuilding -> hypothesis
+
+dataWrangling -> createSubsets
+dataWrangling -> manipulate
+
+visualization -> text
+visualization -> table
+visualization -> plot
+
+hypothesis -> testChoice
+hypothesis -> dataSelection

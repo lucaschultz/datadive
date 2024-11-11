@@ -1,0 +1,36 @@
+{
+  "name": "@datadive/spec",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Core package for business logic",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "analyze": "npx analyze-trace tsc-traces",
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc",
+    "typecheck:trace": "tsc -p tsconfig.json --generateTrace tsc-traces --incremental false --tsBuildInfoFile null"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.1.2",
+    "@datadive/utils": "workspace:^",
+    "neverthrow": "^7.1.0",
+    "type-fest": "^4.26.1"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^",
+    "@typescript/analyze-trace": "^0.10.1"
+  }
+}

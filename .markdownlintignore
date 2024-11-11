@@ -1,0 +1,4 @@
+thesis/
+node_modules/
+.changeset/
+CHANGELOG.md

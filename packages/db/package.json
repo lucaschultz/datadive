@@ -1,0 +1,62 @@
+{
+  "name": "@datadive/db",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A database package utilizing kysely.",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./meta": {
+      "types": "./dist/meta.d.ts",
+      "default": "./dist/meta.js"
+    },
+    "./error": {
+      "types": "./dist/errors/db-errors.d.ts",
+      "default": "./dist/errors/db-errors.js"
+    }
+  },
+  "bin": {
+    "datadive": "./dist/cli/bin.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "cli": "bun run ./dist/cli/bin.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:drop": "drizzle-kit drop",
+    "db:pull": "drizzle-kit introspect",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:up": "drizzle-kit up",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "playground": "bun run ./scripts/playground.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@datadive/turso": "workspace:^",
+    "@datadive/utils": "workspace:^",
+    "@libsql/kysely-libsql": "^0.4.1",
+    "citty": "^0.1.6",
+    "consola": "^3.2.3",
+    "dotenv": "^16.4.5",
+    "kysely": "^0.27.4",
+    "kysely-codegen": "^0.15.0",
+    "neverthrow": "^7.1.0",
+    "prettier": "^3.3.3",
+    "zod": "^3.23.8",
+    "zod-validation-error": "^3.4.0"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:*",
+    "@datadive/tsconfig": "workspace:*",
+    "@total-typescript/ts-reset": "^0.5.1"
+  }
+}

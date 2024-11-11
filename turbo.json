@@ -1,0 +1,86 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "VERCEL_URL",
+    "NODE_ENV",
+    "CI",
+    "SKIP_ENV_VALIDATION",
+    "PORT"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!CHANGELOG.md",
+        "!eslint.config.js",
+        "!playwright.config.ts",
+        "!e2e/**",
+        "!.env.example",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ],
+      "outputs": ["dist/**"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build", "build"],
+      "outputs": ["playwright-report/**", "test-results/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!CHANGELOG.md",
+        "!eslint.config.js",
+        "!.env.example",
+        ".env.test.local",
+        ".env.local",
+        ".env.test",
+        ".env"
+      ]
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"]
+    },
+    "//#lint": {
+      "inputs": [".commitlintrc.ts", "*.ts", "*.js", "tsconfig.json"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
+      "outputs": ["*.tsbuildinfo"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    },
+    "start": {
+      "dependsOn": ["^build", "build"],
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
+    },
+    "clean": { "cache": false },
+    "//#lint:spell": {
+      "outputs": [".cspellcache"]
+    },
+    "//#lint:md": {
+      "inputs": ["**/*.md"]
+    },
+    "sync": { "cache": false }
+  }
+}

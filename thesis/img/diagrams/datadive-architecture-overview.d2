@@ -1,0 +1,20 @@
+Kubernetes: {
+  JupyterHub: Jupyter Hub
+  JupyterServer: Jupyter Server
+
+  Backend: Backend {
+    near: Kubernetes.JupyterServer
+  }
+}
+
+Frontend: Frontend
+
+Kubernetes.Backend -> Database: "Store/retrieve data"
+
+Kubernetes.Backend -> Kubernetes.JupyterHub: "Authentication and user information"
+
+Kubernetes.Backend -> Kubernetes.JupyterServer: "Create/edit notebooks, execute code"
+
+Frontend -> Kubernetes.Backend: "User interactions"
+
+Kubernetes.JupyterHub -> Kubernetes.JupyterServer: "Start/stop servers"

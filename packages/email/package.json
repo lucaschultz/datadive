@@ -1,0 +1,38 @@
+{
+  "name": "@datadive/email",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Send emails",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./error": {
+      "types": "./dist/errors/email-errors.d.ts",
+      "default": "./dist/errors/email-errors.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@datadive/utils": "workspace:^",
+    "@t3-oss/env-core": "^0.11.1",
+    "neverthrow": "^7.1.0",
+    "resend": "^4.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^"
+  }
+}

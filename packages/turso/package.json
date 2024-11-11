@@ -1,0 +1,36 @@
+{
+  "name": "@datadive/turso",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A package for interacting with the Turso Platform API.",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "generate": "bun run ./scripts/generate-typed-open-api.ts",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@datadive/utils": "workspace:^",
+    "ky": "^1.4.0",
+    "neverthrow": "^7.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^",
+    "openapi3-ts": "^4.3.3",
+    "typed-openapi": "^0.5.0"
+  }
+}

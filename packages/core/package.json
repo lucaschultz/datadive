@@ -1,0 +1,39 @@
+{
+  "name": "@datadive/core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Core package for business logic",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./error": {
+      "types": "./dist/errors/core-errors.d.ts",
+      "default": "./dist/errors/core-errors.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint .  --max-warnings 0",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@datadive/auth": "workspace:^",
+    "@datadive/db": "workspace:^",
+    "@datadive/email": "workspace:^",
+    "@datadive/utils": "workspace:^",
+    "@t3-oss/env-core": "^0.11.0",
+    "neverthrow": "^7.1.0"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^"
+  }
+}

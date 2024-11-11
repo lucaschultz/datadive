@@ -1,0 +1,53 @@
+{
+  "name": "@datadive/api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The Datadive REST API.",
+  "license": "MIT",
+  "author": "Luca Schultz",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "bun run rm -rf dist *.tsbuildinfo",
+    "dev": "bun run env:dev bun run --hot src/index.ts",
+    "env:dev": "cross-env NODE_ENV=development",
+    "env:prod": "cross-env NODE_ENV=production",
+    "env:test": "cross-env NODE_ENV=test",
+    "generate": "openapi-typescript ./openapi.yaml -o ./src/openapi.generated.ts",
+    "generate:zod": "openapi-zod-client './openapi.yaml' -p '../../prettier.config.js' -o './src/openapi-zod.generated.ts'",
+    "lint": "eslint .  --max-warnings 0",
+    "playground": "bun --env-file=.env.development.local run scripts/playground.ts",
+    "start": "cross-env NODE_ENV=production bun dist/index.js",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.1.1",
+    "@datadive/auth": "workspace:^",
+    "@datadive/core": "workspace:^",
+    "@datadive/db": "workspace:^",
+    "@datadive/spec": "workspace:^",
+    "@datadive/turso": "workspace:^",
+    "@datadive/utils": "workspace:^",
+    "@hono/zod-openapi": "^0.16.0",
+    "@hono/zod-validator": "^0.3.0",
+    "@scalar/hono-api-reference": "^0.5.147",
+    "@t3-oss/env-core": "^0.11.0",
+    "eta": "^3.5.0",
+    "hono": "^4.4.12",
+    "neverthrow": "^7.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@datadive/eslint": "workspace:^",
+    "@datadive/tsconfig": "workspace:^",
+    "@types/bun": "latest",
+    "cross-env": "^7.0.3"
+  }
+}

@@ -1,0 +1,97 @@
+name: Main CI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  # These are needed to enable turborepo's remote task caching
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TSTRUCT_TOKEN: ${{ secrets.TSTRUCT_TOKEN }}
+
+jobs:
+  spell-and-md-lint:
+    name: Spellcheck and Markdown Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Checks
+        run: bun turbo lint:md lint:spell
+
+  api:
+    name: Datadive API CI
+    runs-on: ubuntu-latest
+
+    environment: Production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Checks
+        run: bun turbo lint typecheck build --filter=...@datadive/api
+
+  web:
+    name: Datadive Web CI
+    runs-on: ubuntu-latest
+
+    environment: Production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Checks
+        run: bun turbo lint typecheck build test:e2e --filter=...@datadive/web
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 30
+
+  marketing:
+    name: Datadive Documentation CI
+    runs-on: ubuntu-latest
+
+    environment: Production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Checks
+        run: bun turbo lint typecheck build test:e2e --filter=...@datadive/docs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docs-playwright-report
+          path: apps/docs/playwright-report/
+          retention-days: 30
