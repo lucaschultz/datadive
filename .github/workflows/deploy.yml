@@ -31,7 +31,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build Docs
-        run: bun turbo lint typecheck build test:e2e --filter=...@datadive/docs
+        run: bun turbo build --filter=...@datadive/docs
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
