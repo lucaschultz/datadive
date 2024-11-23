@@ -10,30 +10,28 @@ import { createSortQueryParams } from '../../../shared/utilities/create-sort-que
 import { toValidationMessages } from '../../../shared/utilities/to-validation-messages'
 import { z } from '../../../shared/utilities/z'
 import { TenantUserReadable } from '../../schemas/tenant-user-readable'
-import { createTenantRouteParams } from '../../utilities/create-tenant-route-params'
+import { DefaultTenantRouteParams } from '../../utilities/create-tenant-route-params'
 
-const QueryParameters = z.object({
+const QueryParams = z.object({
   ...PaginationQueryParams,
   ...createSortQueryParams(
     TenantUserReadable,
     z
       .enum([
         'username',
-        'createdAt',
-        'updatedAt',
-        'deletedAt',
         'firstName',
         'lastName',
         'email',
+        'createdAt',
+        'updatedAt',
+        'deletedAt',
       ])
       .optional()
       .default('username'),
   ),
 })
 
-const QueryParameterValidationErrors = toValidationMessages(QueryParameters)
-
-const RouteParameters = createTenantRouteParams()
+const QueryParameterValidationErrors = toValidationMessages(QueryParams)
 
 export const TenantListUsersEndpoint = createProtectedEndpoint({
   tags: [ApiTag.TenantUser],
@@ -41,18 +39,23 @@ export const TenantListUsersEndpoint = createProtectedEndpoint({
   summary: 'List Users',
   path: ApiPath.Tenant.Users.List,
   request: {
-    params: RouteParameters,
-    query: QueryParameters,
+    query: QueryParams,
+    params: DefaultTenantRouteParams,
   },
   responses: {
     200: createListResponse('User list', TenantUserReadable),
     404: createJsonBody(
-      'Tenant not found',
-      createRouteParamNotFoundError(toValidationMessages(RouteParameters)),
+      'Not found',
+      createRouteParamNotFoundError(
+        toValidationMessages(DefaultTenantRouteParams),
+      ),
     ),
     422: createJsonBody(
       'Validation error',
-      createValidationError('query_param', QueryParameterValidationErrors),
+      z.union([
+        createValidationError('query_param', QueryParameterValidationErrors),
+        createValidationError('route_param', DefaultTenantRouteParams),
+      ]),
     ),
   },
 })

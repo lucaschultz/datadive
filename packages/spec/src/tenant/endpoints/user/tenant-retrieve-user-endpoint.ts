@@ -10,11 +10,11 @@ import { toValidationMessages } from '../../../shared/utilities/to-validation-me
 import { TenantUserReadable } from '../../schemas/tenant-user-readable'
 import { createTenantRouteParams } from '../../utilities/create-tenant-route-params'
 
-const RouteParameters = createTenantRouteParams({
+const RouteParams = createTenantRouteParams({
   userId: Id,
 })
 
-const RouteParamErrors = toValidationMessages(RouteParameters)
+const RouteParamsErrorMessages = toValidationMessages(RouteParams)
 
 export const TenantRetrieveUserEndpoint = createProtectedEndpoint({
   tags: [ApiTag.TenantUser],
@@ -22,17 +22,17 @@ export const TenantRetrieveUserEndpoint = createProtectedEndpoint({
   summary: 'Retrieve User',
   path: ApiPath.Tenant.Users.Retrieve,
   request: {
-    params: RouteParameters,
+    params: RouteParams,
   },
   responses: {
     200: createDataResponse('User', TenantUserReadable),
     404: createJsonBody(
-      'Parameter not found',
-      createRouteParamNotFoundError(RouteParamErrors),
+      'Not found',
+      createRouteParamNotFoundError(RouteParamsErrorMessages),
     ),
     422: createJsonBody(
-      'Validation Error',
-      createValidationError('route_param', RouteParamErrors),
+      'Validation error',
+      createValidationError('route_param', RouteParamsErrorMessages),
     ),
   },
 })

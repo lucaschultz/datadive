@@ -1,10 +1,11 @@
 import { z } from '../../shared/utilities/z'
 
-export function createTenantRouteParams<
-  TParams extends z.ZodRawShape | undefined,
->(params?: TParams) {
-  return z.object({
-    tenantDomain: z.string(),
-    ...params,
-  })
+export const DefaultTenantRouteParams = z.object({
+  tenantDomain: z.string(),
+})
+
+export function createTenantRouteParams<TParams extends z.ZodRawShape>(
+  params: TParams,
+) {
+  return DefaultTenantRouteParams.extend(params)
 }

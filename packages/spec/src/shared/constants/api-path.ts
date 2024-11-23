@@ -35,5 +35,15 @@ export const ApiPath = {
       Update: `${PathPrefix}/tenant/{tenantDomain}/users/{userId}`,
       Delete: `${PathPrefix}/tenant/{tenantDomain}/users/{userId}`,
     },
+    Auth: {
+      CurrentUser: `${PathPrefix}/tenant/{tenantDomain}/auth/current-user`,
+      SignUp: `${PathPrefix}/tenant/{tenantDomain}/sign-up`,
+      SignIn: `${PathPrefix}/tenant/{tenantDomain}/auth/sign-in`,
+      SignOut: `${PathPrefix}/tenant/{tenantDomain}/auth/sign-out`,
+      Token: `${PathPrefix}/tenant/{tenantDomain}/auth/token`,
+      ForgotPassword: `${PathPrefix}/tenant/{tenantDomain}/auth/forgot-password`,
+      ResetPassword: `${PathPrefix}/tenant/{tenantDomain}/auth/reset-password`,
+      VerifyEmail: `${PathPrefix}/tenant/{tenantDomain}/auth/verify-email`,
+    },
   },
 } as const

@@ -1,5 +1,6 @@
 import { ApiPath } from '../../../shared/constants/api-path'
 import { ApiTag } from '../../../shared/constants/api-tag'
+import { createConflictError } from '../../../shared/errors/create-conflict-error'
 import { createRouteParamNotFoundError } from '../../../shared/errors/create-route-param-not-found-error'
 import { createValidationError } from '../../../shared/errors/create-validation-error'
 import { Id } from '../../../shared/schemas/id'
@@ -23,13 +24,21 @@ export const TenantUpdateUserEndpoint = createProtectedEndpoint({
   path: ApiPath.Tenant.Users.Update,
   request: {
     params: RouteParams,
-    body: createJsonBody('User update data', TenantUserUpdateable),
+    body: createJsonBody('User update', TenantUserUpdateable),
   },
   responses: {
     201: createDataResponse('Updated user', TenantUserReadable),
     404: createJsonBody(
-      'Parameter not found',
+      'Not found',
       createRouteParamNotFoundError(toValidationMessages(RouteParams)),
+    ),
+    409: createJsonBody(
+      'Conflict error',
+      createConflictError(
+        toValidationMessages(
+          TenantUserUpdateable.pick({ email: true, username: true }),
+        ),
+      ),
     ),
     422: createJsonBody(
       'Validation error',

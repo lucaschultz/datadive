@@ -12,7 +12,7 @@ import { z } from '../../../shared/utilities/z'
 import { TenantUserReadable } from '../../schemas/tenant-user-readable'
 import { createTenantRouteParams } from '../../utilities/create-tenant-route-params'
 
-const RouteParameters = createTenantRouteParams({
+const RouteParams = createTenantRouteParams({
   userId: Id,
 })
 
@@ -20,7 +20,7 @@ const QueryParameters = z.object({
   ...DeleteQueryParams,
 })
 
-const RouteParamErrors = toValidationMessages(RouteParameters)
+const RouteParamErrors = toValidationMessages(RouteParams)
 const QueryParamErrors = toValidationMessages(QueryParameters)
 
 export const TenantDeleteUserEndpoint = createProtectedEndpoint({
@@ -29,13 +29,13 @@ export const TenantDeleteUserEndpoint = createProtectedEndpoint({
   summary: 'Delete User',
   path: ApiPath.Tenant.Users.Delete,
   request: {
-    params: RouteParameters,
+    params: RouteParams,
     query: QueryParameters,
   },
   responses: {
     200: createDataResponse('Deleted user', TenantUserReadable),
     404: createJsonBody(
-      'Parameter not found',
+      'Not found',
       createRouteParamNotFoundError(RouteParamErrors),
     ),
     422: createJsonBody(
