@@ -8,6 +8,11 @@ import { TenantSignOutEndpoint } from './auth/tenant-sign-out'
 import { TenantSignUpEndpoint } from './auth/tenant-sign-up'
 import { TenantTokenEndpoint } from './auth/tenant-token'
 import { TenantVerifyEmailEndpoint } from './auth/tenant-verify-email'
+import { CreateCellTemplateEndpoint } from './cell-template/create-cell-template-endpoint'
+import { DeleteCellTemplateEndpoint } from './cell-template/delete-cell-template-endpoint'
+import { ListCellTemplatesEndpoint } from './cell-template/list-cell-templates-endpoint'
+import { RetrieveCellTemplateEndpoint } from './cell-template/retrieve-cell-template-endpoint'
+import { UpdateCellTemplateEndpoint } from './cell-template/update-cell-template-endpoint'
 import { TenantCreateUserEndpoint } from './user/tenant-create-user-endpoint'
 import { TenantDeleteUserEndpoint } from './user/tenant-delete-user-endpoint'
 import { TenantListUsersEndpoint } from './user/tenant-list-users-endpoint'
@@ -21,6 +26,13 @@ export const TenantEndpoints = {
     Retrieve: TenantRetrieveUserEndpoint,
     Update: TenantUpdateUserEndpoint,
     Delete: TenantDeleteUserEndpoint,
+  },
+  CellTemplate: {
+    List: ListCellTemplatesEndpoint,
+    Create: CreateCellTemplateEndpoint,
+    Retrieve: RetrieveCellTemplateEndpoint,
+    Update: UpdateCellTemplateEndpoint,
+    Delete: DeleteCellTemplateEndpoint,
   },
   Auth: {
     SignUp: TenantSignUpEndpoint,
