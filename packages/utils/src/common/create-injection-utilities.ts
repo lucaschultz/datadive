@@ -1,3 +1,4 @@
+import type { Result, ResultAsync } from 'neverthrow'
 import type { Tail } from '../type/tail'
 
 /**
@@ -17,7 +18,7 @@ export function createInjectionUtilities<TInjection>() {
     F extends (
       injection: TInjection,
       ...params: Tail<Parameters<F>>
-    ) => ReturnType<F>,
+    ) => Result<unknown, unknown> | ResultAsync<unknown, unknown>,
   >(
     injectee: F,
   ) => {
@@ -28,13 +29,13 @@ export function createInjectionUtilities<TInjection>() {
     F extends (
       injection: TInjection,
       ...params: Tail<Parameters<F>>
-    ) => ReturnType<F>,
+    ) => Result<unknown, unknown> | ResultAsync<unknown, unknown>,
   >(
     injection: TInjection,
     injectee: F,
   ) => {
     return (...args: Tail<Parameters<F>>) => {
-      return injectee(injection, ...args)
+      return injectee(injection, ...args) as ReturnType<F>
     }
   }
 

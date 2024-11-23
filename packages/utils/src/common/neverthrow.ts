@@ -8,6 +8,9 @@ type AnyArray = Array<any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyResult = Result<any, any>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyResultAsync = ResultAsync<any, any>
+
 /**
  * Extracts the error type from a `Result` or `ResultAsync`
  * @example

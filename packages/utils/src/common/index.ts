@@ -1,7 +1,7 @@
 export { isInstanceOf } from './is-instance-of'
 export { capitalize } from './capitalize'
 export { constEnum } from './const-enum'
-export { createInjectionUtilities } from './create-injection-helpers'
+export { createInjectionUtilities } from './create-injection-utilities'
 export { ErrorWithCode } from './error-with-code'
 export { NotExhaustiveError, exhaustive } from './exhaustive'
 export { getErrorMessage, isErrorWithMessage } from './get-error-message'

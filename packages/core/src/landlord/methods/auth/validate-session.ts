@@ -1,50 +1,52 @@
-import type { LandlordCoreInjection } from '../../shared/utils/landlord-core-injection'
+import type { LandlordCoreInjection } from '../../shared/utils/landlord-core-injection';
 
-import { err } from 'neverthrow'
 
-import { exhaustive } from '@datadive/utils/common'
+
+import { err, ok, safeTry } from 'neverthrow'
 
 import { CoreError } from '../../../errors/core-error'
 
-export async function validateSession(
+export function validateSession(
   injection: LandlordCoreInjection,
   headers: { cookie: string; bearerToken: string },
 ) {
-  const { auth } = injection
+  return safeTry(async function* () {
+    const { auth } = injection
 
-  let extractedSession: {
-    id: string
-    from: 'cookie' | 'bearer_token'
-  } | null = null
+    let extractedSession: {
+      id: string
+      from: 'cookie' | 'bearer_token'
+    } | null = null
 
-  const sessionIdFromCookie = auth.extractSessionIdFromCookie(headers)
+    const sessionIdFromCookie = yield* auth
+      .extractSessionIdFromCookie(headers)
+      .safeUnwrap()
 
-  if (sessionIdFromCookie) {
-    extractedSession = { id: sessionIdFromCookie, from: 'cookie' }
-  }
-
-  if (!extractedSession) {
-    const sessionIdFromHeader = auth.extractSessionIdFromBearerToken(headers)
-
-    if (sessionIdFromHeader) {
-      extractedSession = { id: sessionIdFromHeader, from: 'bearer_token' }
+    if (sessionIdFromCookie) {
+      extractedSession = { id: sessionIdFromCookie, from: 'cookie' }
     }
-  }
 
-  if (!extractedSession) {
-    return err(new CoreError.SessionIdNotFound())
-  }
+    if (!extractedSession) {
+      const sessionIdFromHeader = yield* auth
+        .extractSessionIdFromBearerToken(headers)
+        .safeUnwrap()
 
-  const validateSessionResult = await auth.validateSession(extractedSession.id)
-
-  if (validateSessionResult.isErr()) {
-    switch (validateSessionResult.error.code) {
-      case 'invalid_session':
-        return err(new CoreError.InvalidSessionId(extractedSession.from))
-      default:
-        return exhaustive(validateSessionResult.error.code)
+      if (sessionIdFromHeader) {
+        extractedSession = { id: sessionIdFromHeader, from: 'bearer_token' }
+      }
     }
-  }
 
-  return validateSessionResult
+    if (!extractedSession) {
+      return err(new CoreError.SessionIdNotFound())
+    }
+
+    const validateSessionResult = yield* auth
+      .validateSession(extractedSession.id)
+      .mapErr(() => {
+        return new CoreError.InvalidSessionId(extractedSession.from)
+      })
+      .safeUnwrap()
+
+    return ok(validateSessionResult)
+  })
 }
