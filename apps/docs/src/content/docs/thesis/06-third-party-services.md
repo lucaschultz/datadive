@@ -26,6 +26,3 @@ Email delivery is a critical part of the Datadive platform, as it is used to sen
 GitHub offers version control and collaboration tools through its web platform. Developers can store code, track changes, and collaborate on projects. The platform also features tools for reviewing code changes, automating development workflows, and hosting documentation. Datadive hosts its code on GitHub, utilizing it to manage code contributions and project tasks. [][#GITHUB]
 
 Datadive also uses GitHub Pages to host its documentation, that is developed in the `@datadive/docs` package. GitHub Pages is a static site hosting service that serves static web pages directly from a GitHub repository. [][#GITHUB_PAGES]
-
-
-

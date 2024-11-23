@@ -1,14 +1,10 @@
-import { err, ok } from 'neverthrow';
-import { isWithinExpirationDate } from 'oslo';
+import { err, ok } from 'neverthrow'
+import { isWithinExpirationDate } from 'oslo'
 
+import { LandlordTable } from '@datadive/db'
+import { resultFromSafeAsyncFn } from '@datadive/utils/common'
 
-
-import { LandlordTable } from '@datadive/db';
-import { resultFromSafeAsyncFn } from '@datadive/utils/common';
-
-
-
-import { ExpiredEmailValidationCodeError } from './error/expired-email-validation-code-error';
+import { ExpiredEmailValidationCodeError } from './error/expired-email-validation-code-error'
 import { IncorrectEmailValidationCodeError } from './error/incorrect-email-validation-code-error'
 import { defineAuthFunction } from './utility/define-auth-function'
 

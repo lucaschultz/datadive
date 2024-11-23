@@ -1,6 +1,4 @@
-import { err, ok } from 'neverthrow';
-
-
+import { err, ok } from 'neverthrow'
 
 import { resultFromSafeAsyncFn } from '@datadive/utils/common'
 

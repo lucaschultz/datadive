@@ -1,17 +1,17 @@
 $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
-version: "0.2"
+version: '0.2'
 ignorePaths:
   - .git
   - bun.lockb
   - ./branch_out
   - .changeset
-  - "**/*.generated.*"
-  - "**/*.svg"
-  - "**/.env"
-  - "**/.env.local"
-  - "**/.env.production"
-  - "**/.env.development"
-  - "**/.env.testing"
+  - '**/*.generated.*'
+  - '**/*.svg'
+  - '**/.env'
+  - '**/.env.local'
+  - '**/.env.production'
+  - '**/.env.development'
+  - '**/.env.testing'
 words:
   - abcdefghjkmnpqrstvwxyz
   - acst

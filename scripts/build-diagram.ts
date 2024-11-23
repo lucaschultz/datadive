@@ -1,14 +1,8 @@
-import { spawn } from 'node:child_process';
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import { spawn } from 'node:child_process'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
-
-
-import { Glob } from 'bun';
-
-
-
-
+import { Glob } from 'bun'
 
 function exec(
   command: string,

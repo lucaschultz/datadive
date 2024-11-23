@@ -1,6 +1,4 @@
-import type { LandlordCoreInjection } from '../../shared/utils/landlord-core-injection';
-
-
+import type { LandlordCoreInjection } from '../../shared/utils/landlord-core-injection'
 
 import { err, ok, safeTry } from 'neverthrow'
 

@@ -1,8 +1,4 @@
-import { constEnum } from '@datadive/utils/common';
-
-
-
-
+import { constEnum } from '@datadive/utils/common'
 
 export const ApiTag = constEnum({
   LandlordUser: 'Landlord User',

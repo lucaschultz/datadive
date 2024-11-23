@@ -1,19 +1,11 @@
-import type { AstroIntegration, RehypePlugins } from 'astro';
+import type { AstroIntegration, RehypePlugins } from 'astro'
 
+import { readFile, writeFile } from 'fs/promises'
+import path from 'path'
 
-
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
-
-
-
-import { ok, ResultAsync, safeTry } from 'neverthrow';
-import { visit } from 'unist-util-visit';
-import * as YAML from 'yaml';
-
-
-
-
+import { ok, ResultAsync, safeTry } from 'neverthrow'
+import { visit } from 'unist-util-visit'
+import * as YAML from 'yaml'
 
 interface Citation {
   key: string
