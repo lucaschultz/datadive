@@ -23,7 +23,7 @@ export const LandlordCreateUserEndpoint = createProtectedEndpoint({
       'Conflict error',
       createConflictError(
         toValidationMessages(
-          LandlordUserCreatable.pick({ email: true, username: true }),
+          LandlordUserCreatable.pick({ email: true, username: true, id: true }),
         ),
       ),
     ),

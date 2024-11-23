@@ -1,5 +1,6 @@
 import { ApiPath } from '../../../shared/constants/api-path'
 import { ApiTag } from '../../../shared/constants/api-tag'
+import { createConflictError } from '../../../shared/errors/create-conflict-error'
 import { createValidationError } from '../../../shared/errors/create-validation-error'
 import { createDataResponse } from '../../../shared/utilities/create-data-response'
 import { createProtectedEndpoint } from '../../../shared/utilities/create-endpoint'
@@ -18,6 +19,12 @@ export const CreateTenantEndpoint = createProtectedEndpoint({
   },
   responses: {
     201: createDataResponse('Created tenant', TenantReadable),
+    409: createJsonBody(
+      'Conflict error',
+      createConflictError(
+        toValidationMessages(TenantCreatable.pick({ id: true })),
+      ),
+    ),
     422: createJsonBody(
       'Validation error',
       createValidationError('body', toValidationMessages(TenantCreatable)),

@@ -27,7 +27,7 @@ export const TenantCreateUserEndpoint = createProtectedEndpoint({
       'Conflict error',
       createConflictError(
         toValidationMessages(
-          TenantUserCreatable.pick({ email: true, username: true }),
+          TenantUserCreatable.pick({ email: true, username: true, id: true }),
         ),
       ),
     ),
