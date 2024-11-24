@@ -17,6 +17,7 @@
     "ci:web": "bun turbo lint typecheck build test:e2e --filter=...@datadive/web --force",
     "cli": "bun run ./packages/db/dist/cli/bin.js",
     "commit": "git-cz",
+    "dev": "turbo dev --filter=...@datadive/api --filter=...@datadive/web",
     "diagram": "bun run diagram:generate && bun run diagram:build",
     "diagram:build": "bun run ./scripts/build-diagram.ts",
     "diagram:generate": "source thesis/.env.local && bun run erd-generator libsql -f -a $LANDLORD_DB_TOKEN -o ./thesis/img/diagrams/landlord-database-schema.d2 $LANDLORD_DB_URI && bun run erd-generator libsql -f -a $TENANT_DB_TOKEN -o ./thesis/img/diagrams/tenant-database-schema.d2 $TENANT_DB_URI",
