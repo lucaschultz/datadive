@@ -7,13 +7,15 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "clean": "bun run rm -rf dist *.tsbuildinfo playwright-report test-results",
-    "dev": "vite",
+    "dev": "dotenvx run -f .env.development.local --  vite",
     "lint": "eslint . --max-warnings 0",
     "start": "vite preview",
     "test:e2e": "playwright test",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.23.0",
+    "@t3-oss/env-core": "^0.11.0",
     "@tanstack/react-router": "^1.51.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -28,6 +30,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "cross-env": "^7.0.3",
     "vite": "^5.4.1"
   }
 }
