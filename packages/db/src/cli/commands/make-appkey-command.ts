@@ -9,16 +9,11 @@ import { generateKey } from '@datadive/utils/node'
 import { exitWithError } from '../arguments/exit-with-error'
 import { relativizePath } from '../utilities/relativize-path'
 
-/**
- * Extracts the APP_KEY from the given content
- * @param content - The content to extract the APP_KEY from
- * @returns The APP_KEY and a function to replace the APP_KEY in the content
- */
-function extractAppKey(content: string) {
+export function extractEnvVariable(variableName: string, content: string) {
   const lines = content.split('\n')
 
   return lines.reduce<
-    { appKey: string; replaceAppKey: (appKey: string) => string } | undefined
+    { value: string; replaceWith: (appKey: string) => string } | undefined
   >((result, line, index) => {
     if (result) {
       return result
@@ -28,27 +23,23 @@ function extractAppKey(content: string) {
     const key = splitResults[0]?.trim()
     let value = splitResults[1]?.trim()
 
-    if (key !== 'APP_KEY') {
+    if (key !== variableName || value === undefined) {
       return undefined
     }
 
-    if (value?.startsWith("'") ?? value?.startsWith('"')) {
+    if (value.startsWith("'") || value.startsWith('"')) {
       value = value.slice(1)
     }
 
-    if (value?.endsWith("'") ?? value?.endsWith('"')) {
+    if (value.endsWith("'") || value.endsWith('"')) {
       value = value.slice(0, -1)
     }
 
-    if (!value) {
-      return undefined
-    }
-
     return {
-      appKey: value,
-      replaceAppKey: (appKey: string) => {
+      value: value,
+      replaceWith: (value: string) => {
         const newLines = [...lines]
-        newLines.splice(index, 1, `APP_KEY=${appKey}`)
+        newLines.splice(index, 1, `${variableName}=${value}`)
 
         return newLines.join('\n')
       },
@@ -88,7 +79,7 @@ export const makeAppkeyCommand = defineCommand({
     try {
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       const content = (await readFile(args.env)).toString()
-      const existingAppKey = extractAppKey(content)
+      const existingAppKey = extractEnvVariable('APP_KEY', content)
 
       if (existingAppKey) {
         if (!args.force) {
@@ -98,7 +89,7 @@ export const makeAppkeyCommand = defineCommand({
         }
 
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        await writeFile(args.env, existingAppKey.replaceAppKey(appKey), {
+        await writeFile(args.env, existingAppKey.replaceWith(appKey), {
           flag: 'w',
         })
         consola.success(`App key updated in ${args.env}`)
@@ -107,7 +98,7 @@ export const makeAppkeyCommand = defineCommand({
 
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       await writeFile(args.env, `APP_KEY=${appKey}\n${content}`, { flag: 'w' })
-      consola.success(`✔App key written to ${relativizePath(args.env)}`)
+      consola.success(`App key written to ${relativizePath(args.env)}`)
     } catch (err) {
       if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
         // eslint-disable-next-line security/detect-non-literal-fs-filename

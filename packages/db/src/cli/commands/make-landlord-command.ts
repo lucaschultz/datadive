@@ -1,3 +1,5 @@
+import { readFile, writeFile } from 'fs/promises'
+
 import { defineCommand } from 'citty'
 import consola from 'consola'
 import { ok, safeTry } from 'neverthrow'
@@ -14,6 +16,7 @@ import {
   processMigrationFailedError,
   processMigrationResults,
 } from '../utilities/process-migration-results'
+import { extractEnvVariable } from './make-appkey-command'
 
 export const makeLandlordCommand = defineCommand({
   meta: {
@@ -28,6 +31,13 @@ export const makeLandlordCommand = defineCommand({
       valueHint: 'landlord-name',
     },
     env: envArg,
+    'replace-env-vars': {
+      type: 'boolean',
+      alias: 'r',
+      required: false,
+      default: false,
+      description: 'Replace the landlord env variables in the env file',
+    },
     'landlord-migrations': migrationFolderArgs['landlord-migrations'],
   },
   async run({ args }) {
@@ -66,7 +76,10 @@ export const makeLandlordCommand = defineCommand({
         `Landlord database migrated successfully`,
       )
 
-      return ok(null)
+      return ok({
+        url: databaseClientConfig.url,
+        authToken: databaseClientConfig.authToken,
+      })
     })
 
     if (result.isErr()) {
@@ -79,6 +92,40 @@ export const makeLandlordCommand = defineCommand({
         `Landlord database migration failed`,
       )
       return
+    }
+
+    if (args['replace-env-vars']) {
+      if (args.env) {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        let content = (await readFile(args.env)).toString()
+
+        const landlordDatabaseUrl = extractEnvVariable(
+          'LANDLORD_DATABASE_URL',
+          content.toString(),
+        )
+        if (landlordDatabaseUrl) {
+          content = landlordDatabaseUrl.replaceWith(result.value.url)
+        }
+
+        const landlordDatabaseAuthToken = extractEnvVariable(
+          'LANDLORD_DATABASE_AUTH_TOKEN',
+          content.toString(),
+        )
+        if (landlordDatabaseAuthToken) {
+          content = landlordDatabaseAuthToken.replaceWith(
+            result.value.authToken,
+          )
+        }
+
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        await writeFile(args.env, content)
+
+        consola.info(`Replaced landlord env variables in the env file`)
+      } else {
+        consola.warn(
+          `Cannot replace env variables in the env file because the env file is not provided`,
+        )
+      }
     }
 
     consola.success(`Created landlord ${args.name}`)
