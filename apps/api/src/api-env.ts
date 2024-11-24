@@ -13,7 +13,7 @@ export const apiEnv = createEnv({
     LANDLORD_DATABASE_URL: z.string().url(),
     LANDLORD_DATABASE_AUTH_TOKEN: z.string().min(1).optional(),
 
-    PORT: z.coerce.number().default(41201),
+    PORT: z.coerce.number().optional().default(41201),
 
     TURSO_API_TOKEN: z.string().min(1),
     TURSO_ORG: z.string().min(1),
