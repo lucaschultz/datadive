@@ -7,6 +7,7 @@ export const ApiTag = constEnum({
   TenantUser: 'Tenant User',
   TenantAuth: 'Tenant Auth',
   TenantCellTemplate: 'Tenant Cell Template',
+  TenantInput: 'Tenant Input',
 })
 
 export type ApiTag = constEnum<typeof ApiTag>

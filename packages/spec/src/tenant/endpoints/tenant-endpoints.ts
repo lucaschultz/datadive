@@ -13,6 +13,11 @@ import { DeleteCellTemplateEndpoint } from './cell-template/delete-cell-template
 import { ListCellTemplatesEndpoint } from './cell-template/list-cell-templates-endpoint'
 import { RetrieveCellTemplateEndpoint } from './cell-template/retrieve-cell-template-endpoint'
 import { UpdateCellTemplateEndpoint } from './cell-template/update-cell-template-endpoint'
+import { CreateInputEndpoint } from './input/create-input-endpoint'
+import { DeleteInputEndpoint } from './input/delete-input-endpoint'
+import { ListInputsEndpoint } from './input/list-inputs-endpoint'
+import { RetrieveInputEndpoint } from './input/retrieve-input-endpoint'
+import { UpdateInputEndpoint } from './input/update-input-endpoint'
 import { TenantCreateUserEndpoint } from './user/tenant-create-user-endpoint'
 import { TenantDeleteUserEndpoint } from './user/tenant-delete-user-endpoint'
 import { TenantListUsersEndpoint } from './user/tenant-list-users-endpoint'
@@ -33,6 +38,13 @@ export const TenantEndpoints = {
     Retrieve: RetrieveCellTemplateEndpoint,
     Update: UpdateCellTemplateEndpoint,
     Delete: DeleteCellTemplateEndpoint,
+  },
+  Input: {
+    List: ListInputsEndpoint,
+    Create: CreateInputEndpoint,
+    Retrieve: RetrieveInputEndpoint,
+    Update: UpdateInputEndpoint,
+    Delete: DeleteInputEndpoint,
   },
   Auth: {
     SignUp: TenantSignUpEndpoint,

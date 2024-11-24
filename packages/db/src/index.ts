@@ -33,6 +33,8 @@ export {
   type TenantDatabaseSchema,
   type TenantKysely,
 } from './tenant/create-tenant-kysely'
+export { InputType } from './tenant/constants/input-type'
+export { NotebookStatus } from './tenant/constants/notebook-status'
 
 // Errors
 export { DbError } from './errors/db-error'

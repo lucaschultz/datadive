@@ -42,6 +42,13 @@ export const ApiPath = {
       Update: `${PathPrefix}/tenant/{tenantDomain}/cell-templates/{cellTemplateId}`,
       Delete: `${PathPrefix}/tenant/{tenantDomain}/cell-templates/{cellTemplateId}`,
     },
+    Inputs: {
+      List: `${PathPrefix}/tenant/{tenantDomain}/inputs`,
+      Create: `${PathPrefix}/tenant/{tenantDomain}/inputs`,
+      Retrieve: `${PathPrefix}/tenant/{tenantDomain}/inputs/{inputId}`,
+      Update: `${PathPrefix}/tenant/{tenantDomain}/inputs/{inputId}`,
+      Delete: `${PathPrefix}/tenant/{tenantDomain}/inputs/{inputId}`,
+    },
     Auth: {
       CurrentUser: `${PathPrefix}/tenant/{tenantDomain}/auth/current-user`,
       SignUp: `${PathPrefix}/tenant/{tenantDomain}/sign-up`,
