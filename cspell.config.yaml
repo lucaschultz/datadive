@@ -7,11 +7,7 @@ ignorePaths:
   - .changeset
   - '**/*.generated.*'
   - '**/*.svg'
-  - '**/.env'
-  - '**/.env.local'
-  - '**/.env.production'
-  - '**/.env.development'
-  - '**/.env.testing'
+  - '**/.env*'
 words:
   - abcdefghjkmnpqrstvwxyz
   - acst
@@ -75,6 +71,7 @@ words:
   - Dorfmeister
   - dorny
   - dotenv
+  - dotenvx
   - dsznajder
   - Duarte
   - Elsakaan
