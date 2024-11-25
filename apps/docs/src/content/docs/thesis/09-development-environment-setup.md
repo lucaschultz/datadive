@@ -56,11 +56,10 @@ This might take a while as it compiles all the TypeScript code into JavaScript. 
 After the build is complete, set up the `.env` files for development. Datadive needs two env files for development, one for the API and one for the web app. The repository contains example files that you can copy and modify. At the root of the repository, run:
 
 ```bash
-cp apps/web/.env.development.example apps/web/.env.development.local
-cp apps/api/.env.development.example apps/api/.env.development.local
+cp apps/web/.env.development.example apps/web/.env.development.local && cp apps/api/.env.development.example apps/api/.env.development.local
 ```
 
-You don't need to change anything in the frontend env file. The backend file needs to be modified. Open the `apps/web/.env.development.local` file in your code editor. Replace `<TURSO_API_KEY>` with a valid API key for the Turso Platform API. This API key can be created either in the Turso web interface or using the turso CLI by running:
+You don't need to change anything in the frontend env file. The backend file needs to be modified. Open the `apps/api/.env.development.local` file in your code editor. Replace `<TURSO_API_KEY>` with a valid API key for the Turso Platform API. This API key can be created either in the Turso web interface or using the turso CLI by running:
 
 ```bash
 turso auth api-tokens mint <api-token-name>
@@ -71,24 +70,28 @@ Replace `<api-token-name>` with a name for the API token. The command will retur
 The Datadive repository includes a CLI tool that can be used for common development tasks such as creating a landlord or tenant, running migrations, or generating a new app key. An app key is used to encrypt sensitive data in the database and is required for the development environment. To generate a new app key, run:
 
 ```bash
-bun run cli make:app-key --env=apps/web/.env.development.local --force
+bun run cli make:appkey --env=apps/api/.env.development.local --force
 ```
 
-This command will generate a new app key and store it in the `apps/web/.env.development.local` file. The `--force` flag is used to overwrite the existing `<APP_KEY>` placeholder or app key. The app key is used to encrypt sensitive data in the database and should be kept secret. If you change the app key, you'll need to reset the landlord and delete all tenants. Therefore, it is recommended to save a backup of the app key in a secure location like a password manager.
+This command will generate a new app key and store it in the `apps/api/.env.development.local` file. The `--force` flag is used to overwrite the existing `<APP_KEY>` placeholder or app key. The app key is used to encrypt sensitive data in the database and should be kept secret. If you change the app key, you'll need to reset the landlord and delete all tenants. Therefore, it is recommended to save a backup of the app key in a secure location like a password manager.
 
 The Datadive platform requires a landlord to manage tenants. To create a landlord, run the following command in the root directory of the repository:
 
 ```bash
-bun run cli make:landlord --env=apps/web/.env.development.local development
+bun run cli make:landlord --replace-env-vars --env=apps/api/.env.development.local dev
 ```
 
-This command will create a landlord database using the Turso API, run the landlord migrations, and print the connection details to the console. The connection details include the database URL and token, which are required to connect to the landlord database. Replace the `<LANDLORD_DATABASE_URL>` and `<LANDLORD_DATABASE_TOKEN>` placeholders in the `apps/web/.env.development.local` file with the connection details. The last step is to create a user for the landlord. To create a user, run the following command in the root directory of the repository:
+This command will create a landlord database using the Turso API, run the landlord migrations, and print the connection details to the console. The connection details include the database URL and token, which are required to connect to the landlord database. The command will also replace the `<LANDLORD_DATABASE_URL>` and `<LANDLORD_DATABASE_AUTH_TOKEN>` placeholders in the `apps/api/.env.development.local` file with the connection details.
+
+### Creating a Tenant
+
+To create a tenant using the CLI, run the following command in the root directory of the repository:
 
 ```bash
-bun run cli seed:landlord --env=apps/web/.env.development.local
+bun run cli make:tenant --env=apps/api/.env.development.local dev
 ```
 
-This command will create a user with the email `developer@datadive.app` and the password `password`. You can use these credentials to log in to the landlord interface of the Datadive platform.
+This will create a tenant database using the Turso API and run the tenant migrations.
 
 ### Running Datadive
 
@@ -98,14 +101,6 @@ To start the Datadive platform, run the following command in the root directory 
 bun run dev
 ```
 
-This command will start the Datadive platform in development mode. The platform consists of the API and the web application. The API will be available at `http://localhost:3000` and the web application at `http://localhost:3001`. You can access the web application in your browser to start developing and testing the Datadive platform.
+This command will start the Datadive platform in development mode. The platform includes both the API and the web application. The API will be accessible at `http://localhost:3000`, while the web application will be available at `http://localhost:3001`. You can access the web application in your browser and use an API client, such as [curl](https://curl.se) or [Bruno](https://github.com/usebruno/bruno), to begin developing and testing the Datadive platform.
 
-### Creating a Tenant
-
-To create a tenant using the CLI, run the following command in the root directory of the repository:
-
-```bash
-bun run cli make:tenant --env=apps/web/.env.development.local dev
-```
-
-This will create a tenant database using the Turso API and run the tenant migrations. To access the tenant interface, open [localhost:3001/landlord/dev](http://localhost:3001/dev/). You can log in with the email `developer@datadive.app` and the password `password`.
+The API's development server hosts a specification that includes all the implemented endpoints on the Datadive platform. You can access this specification at `http://localhost:3000/spec` to explore the available endpoints and their parameters. To create users for either landlord or tenants, use the sign-up endpoints provided by the Datadive API.
