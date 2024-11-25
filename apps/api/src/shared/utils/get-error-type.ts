@@ -17,5 +17,5 @@ export function getErrorType(code: ApiErrorCode) {
     throw new Error(`Unknown error name key: ${key}`)
   }
 
-  return `${apiEnv.BASE_URL}${apiEnv.REFERENCE_PATH}#model/${errorName.toLowerCase()}`
+  return `${apiEnv.BASE_URL}${apiEnv.SPECIFICATION_PATH}#model/${errorName.toLowerCase()}`
 }

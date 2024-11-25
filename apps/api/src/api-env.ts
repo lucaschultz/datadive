@@ -25,8 +25,8 @@ export const apiEnv = createEnv({
       .refine((url) => !url.endsWith('/'), {
         message: 'Base URL must not end with a slash',
       }),
-    REFERENCE_PATH: z.string().refine((path) => path.startsWith('/'), {
-      message: 'Reference path must start with a slash',
+    SPECIFICATION_PATH: z.string().refine((path) => path.startsWith('/'), {
+      message: 'Specification path must start with a slash',
     }),
   },
   runtimeEnv: process.env,
