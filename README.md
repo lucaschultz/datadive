@@ -1,6 +1,9 @@
+> [!NOTE]
+> This project has be transferred to the Behavioral Security Research Group at the University of Bonn and is not actively maintained in this repository. The documentation site and repository are kept for archival purposes only.
+
 # Datadive
 
-A web application for data analysis that provides a user-friendly interface for creating, editing, and sharing data analysis workflows. Head over to the [Datadive documentation](https://docs.datadive.app) to learn more.
+A web application for data analysis that provides a user-friendly interface for creating, editing, and sharing data analysis workflows. Head over to the [Datadive documentation](https://datadive.lucaschultz.com)[^1] to learn more.
 
 ## Overview
 
@@ -121,3 +124,5 @@ This project is licensed under the [LICENSE](LICENSE) file in the repository.
 ## Acknowledgments
 
 Built as part of a thesis project at the Behavioral Security Research Group at the University of Bonn.
+
+[^1]: The `datadive.app` domain was transferred to the Behavioral Security Research Group at the University of Bonn. The team subsequently removed the DNS entry for the documentation site which was previously hosted at `docs.datadive.app`. The documentation has since been restored at [`datadive.lucaschultz.com`](https://datadive.lucaschultz.com).
